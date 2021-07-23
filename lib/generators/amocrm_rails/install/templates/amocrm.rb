@@ -1,6 +1,6 @@
 require 'amocrm'
 
-Amocrm.setup do |config|
+AmocrmRails.setup do |config|
   if File.exist?('config/amocrm.yml')
     processed = YAML.load_file('config/amocrm.yml')[Rails.env]
 

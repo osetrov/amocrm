@@ -1,4 +1,4 @@
-module Amocrm
+module AmocrmRails
   class Request
     attr_accessor :access_token, :api_endpoint, :timeout, :open_timeout, :proxy, :faraday_adapter, :symbolize_keys, :debug, :logger, :test
 
@@ -7,13 +7,13 @@ module Amocrm
 
     def initialize(access_token: nil, api_endpoint: nil, timeout: nil, open_timeout: nil, proxy: nil, faraday_adapter: nil, symbolize_keys: false, debug: false, logger: nil, test: false)
       @path_parts = []
-      @access_token = access_token || Amocrm::access_token
+      @access_token = access_token || AmocrmRails::access_token
       if @access_token.nil?
-        Amocrm.generate_access_token
-        @access_token = Amocrm::access_token
+        AmocrmRails.generate_access_token
+        @access_token = AmocrmRails::access_token
       end
       @access_token = @access_token.strip if @access_token
-      @api_endpoint = api_endpoint || Amocrm::api_endpoint
+      @api_endpoint = api_endpoint || AmocrmRails::api_endpoint
       @timeout = timeout || self.class.timeout || DEFAULT_TIMEOUT
       @open_timeout = open_timeout || self.class.open_timeout || DEFAULT_OPEN_TIMEOUT
       @proxy = proxy || self.class.proxy || ENV['AMOCRM_PROXY']

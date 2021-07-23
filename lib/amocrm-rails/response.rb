@@ -1,4 +1,4 @@
-module Amocrm
+module AmocrmRails
   class Response
     attr_accessor :body, :headers
     

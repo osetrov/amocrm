@@ -1,4 +1,4 @@
-module Amocrm
+module AmocrmRails
   class APIRequest
 
     def initialize(builder: nil)
@@ -15,7 +15,7 @@ module Amocrm
         parse_response(response)
       rescue => e
         if e.response.try(:code) == 401 && first_time
-          Amocrm.generate_access_token
+          AmocrmRails.generate_access_token
           self.post(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
@@ -33,7 +33,7 @@ module Amocrm
         parse_response(response)
       rescue => e
         if e.response.try(:code) == 401 && first_time
-          Amocrm.generate_access_token
+          AmocrmRails.generate_access_token
           self.patch(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
@@ -51,7 +51,7 @@ module Amocrm
         parse_response(response)
       rescue => e
         if e.response.try(:code) == 401 && first_time
-          Amocrm.generate_access_token
+          AmocrmRails.generate_access_token
           self.put(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
@@ -68,10 +68,8 @@ module Amocrm
         end
         parse_response(response)
       rescue => e
-        p e
-        p e.response
         if e.response.try(:code) == 401 && first_time
-          Amocrm.generate_access_token
+          AmocrmRails.generate_access_token
           self.get(params: params, headers: headers, first_time: false)
         else
           handle_error(e)
@@ -89,7 +87,7 @@ module Amocrm
         parse_response(response)
       rescue => e
         if e.response.try(:code) == 401 && first_time
-          Amocrm.generate_access_token
+          AmocrmRails.generate_access_token
           self.delete(params: params, headers: headers, first_time: false)
         else
           handle_error(e)
@@ -204,7 +202,7 @@ module Amocrm
     def validate_access_token
       access_token = self.access_token
       unless access_token && self.api_endpoint
-        raise Amocrm::AmocrmError, "You must set an access_token prior to making a call"
+        raise AmocrmRails::AmocrmError, "You must set an access_token prior to making a call"
       end
     end
 
@@ -213,7 +211,7 @@ module Amocrm
     end
 
     def base_api_url
-      "#{Amocrm.api_endpoint}/api/v2/"
+      "#{AmocrmRails.api_endpoint}/api/v2/"
     end
   end
 end

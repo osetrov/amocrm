@@ -1,4 +1,4 @@
-module Amocrm
+module AmocrmRails
   class AmocrmError < StandardError
     attr_reader :title, :detail, :body, :raw_body, :status_code
 

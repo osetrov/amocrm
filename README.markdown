@@ -71,6 +71,13 @@
     4. [Массовый список связанных сущностей](#mass_links_list)
     5. [Массовая привязка сущностей](#mass_links_link)
     6. [Массовая отвязка сущностей](#mass_links_unlink)
+10. [Задачи](#tasks)
+    1. [Список задач](#tasks_list)
+    2. [Получение задачи по ID](#tasks_detail)
+    3. [Добавление задач](#tasks_add)
+    4. [Редактирование задач](#tasks_edit)
+    5. [Редактирование задачи](#task_edit)
+    6. [Выполнение задачи](#task_complete)
 
 ## <a name="install"></a> Установка
 
@@ -906,4 +913,72 @@ links = response.body[:_embedded][:links]
 response = AmocrmRails::Request.customers.unlink.create(body: body)
 links = response.body[:_embedded][:links]
 ```
+## <a name="tasks"></a> [Задачи](https://www.amocrm.ru/developers/content/crm_platform/tasks-api)
+### <a name="tasks_list"></a> [Список задач](https://www.amocrm.ru/developers/content/crm_platform/tasks-api#tasks-list)
+```ruby
+params = {
+        page: 0,
+        limit: 10
+}
+response = AmocrmRails::Request.tasks.retrieve(params: params)
+p(response.body)
+tasks = response.body[:_embedded][:tasks]
+task_id = tasks.first[:id]
+```
+### <a name="tasks_detail"></a> [Получение задачи по ID](https://www.amocrm.ru/developers/content/crm_platform/tasks-api#task-detail)
+```ruby
+response = AmocrmRails::Request.tasks(task_id).retrieve
+p(response.body)
+task_id = response.body[:id]
+```
+### <a name="tasks_add"></a> [Добавление задач](https://www.amocrm.ru/developers/content/crm_platform/tasks-api#tasks-add)
+```ruby
+body = [
+ {
+   task_type_id: 1,
+   text: "Встретиться с клиентом Иван Иванов",
+   complete_till: 1588885140
+ }
+]
+response = AmocrmRails::Request.tasks.create(body: body)
+p(response.body)
+tasks = response.body[:_embedded][:tasks]
+```
+### <a name="tasks_edit"></a> [Редактирование задач](https://www.amocrm.ru/developers/content/crm_platform/tasks-api#tasks-edit)
+```ruby
+body = [
+    {
+      id: task_id,
+      task_type_id: 2,
+      text: "Новое название для задачи",
+      complete_till: 1588885140
+    }
+]
+response = AmocrmRails::Request.tasks.update(body: body)
+p(response.body)
+tasks = response.body[:_embedded][:tasks]
+```
+### <a name="task_edit"></a> [Редактирование задачи](https://www.amocrm.ru/developers/content/crm_platform/tasks-api#tasks-edit)
+```ruby
+body = {
+  task_type_id: 2,
+  text: "Новое название для задачи",
+  complete_till: 1588885140
+}
+response = AmocrmRails::Request.tasks(task_id).update(body: body)
+task = response.body
+```
+### <a name="task_complete"></a> [Выполнение задачи](https://www.amocrm.ru/developers/content/crm_platform/tasks-api#tasks-complete)
+```ruby
+body = {
+  is_completed: true,
+  result: {
+    text: "Удалось связаться с клиентом"
+  }
+}
+response = AmocrmRails::Request.tasks(task_id).update(body: body)
+task = response.body
+```
+
+
 

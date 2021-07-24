@@ -39,6 +39,14 @@
     3. [Фильтрация списка компаний](#filters_companies)
     4. [Фильтрация списка покупателей](#filters_customers)
     5. [Типы фильтров](#filters_types)
+6. [Контакты](#contacts)
+    1. [Список контактов](#contacts_list)
+    2. [Получение контакта по ID](#contacts_detail)
+    3. [Добавление контактов](#contacts_add)
+    4. [Редактирование контактов](#contacts_edit)
+    5. [Редактирование контакта](#contact_edit)
+    6. [Привязка чатов к контактам](#contacts_chat_connect)
+    7. [Получение списка чатов контакта](#contacts_chat_list)
 
 ## <a name="install"></a> Установка
 
@@ -463,6 +471,82 @@ customers = response.body[:_embedded][:customers]
 ```
 ### <a name="filters_types"></a> [Типы фильтров](https://www.amocrm.ru/developers/content/crm_platform/filters-api#filter-types)
 
-
-
+## <a name="contacts"></a> [Контакты](https://www.amocrm.ru/developers/content/crm_platform/contacts-api)
+### <a name="contacts_list"></a> [Список контактов](https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-list)
+```ruby
+params = {
+  with: 'leads',
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.contacts.retrieve(params: params)
+p(response.body)
+contacts = response.body[:_embedded][:contacts]
+contact_id = contacts.first[:id]
+```
+### <a name="contacts_detail"></a> [Получение контакта по ID](https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contact-detail)
+```ruby
+response = AmocrmRails::Request.contacts(contact_id).retrieve
+p(response.body)
+```
+### <a name="contacts_add"></a> [Добавление контактов](https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-add)
+```ruby
+body = [
+  {
+    first_name: "Петр",
+    last_name: "Смирнов"
+  },
+  {
+    name: "Владимир Смирнов"
+  }
+]
+response = AmocrmRails::Request.contacts.create(body: body)
+p(response.body)
+contacts = response.body[:_embedded][:contacts]
+contact_id = contacts.first[:id]
+```
+### <a name="contacts_edit"></a> [Редактирование контактов](https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-edit)
+```ruby
+body = [
+  {
+    id: contact_id,
+    first_name: "Иван",
+    last_name: "Иванов"
+  }
+]
+response = AmocrmRails::Request.contacts.update(body: body)
+p(response.body)
+contacts = response.body[:_embedded][:contacts]
+contact_id = contacts.first[:id]
+```
+### <a name="contact_edit"></a> [Редактирование контакта](https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-edit)
+```ruby
+body = {
+  first_name: "Иван",
+  last_name: "Иванов"
+}
+response = AmocrmRails::Request.contacts(contact_id).update(body: body)
+p(response.body)
+```
+### <a name="contacts_chat_connect"></a> [Привязка чатов к контактам](https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-chat-connect)
+```ruby
+body = [
+  {
+    contact_id: contact_id,
+    chat_id: uid
+  }
+]
+response = AmocrmRails::Request.contacts.chats.create(body: body)
+p(response.body)
+```
+### <a name="contacts_chat_list"></a> [Получение списка чатов контакта](https://www.amocrm.ru/developers/content/crm_platform/contacts-api#contacts-chat-list)
+```ruby
+params = [
+  {
+    contact_id: contact_id
+  }
+]
+response = AmocrmRails::Request.contacts.chats.retrieve(params: params)
+p(response.body)
+```
 

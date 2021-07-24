@@ -17,6 +17,9 @@ module AmocrmRails
         if e.response.try(:code) == 401 && first_time
           AmocrmRails.generate_access_token
           self.post(params: params, headers: headers, body: body, first_time: false)
+        elsif e.response.try(:code) == 429
+          sleep(1.second)
+          self.post(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
         end
@@ -34,6 +37,9 @@ module AmocrmRails
       rescue => e
         if e.response.try(:code) == 401 && first_time
           AmocrmRails.generate_access_token
+          self.patch(params: params, headers: headers, body: body, first_time: false)
+        elsif e.response.try(:code) == 429
+          sleep(1.second)
           self.patch(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
@@ -53,6 +59,9 @@ module AmocrmRails
         if e.response.try(:code) == 401 && first_time
           AmocrmRails.generate_access_token
           self.put(params: params, headers: headers, body: body, first_time: false)
+        elsif e.response.try(:code) == 429
+          sleep(1.second)
+          self.put(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
         end
@@ -71,6 +80,9 @@ module AmocrmRails
         if e.response.try(:code) == 401 && first_time
           AmocrmRails.generate_access_token
           self.get(params: params, headers: headers, first_time: false)
+        elsif e.response.try(:code) == 429
+          sleep(1.second)
+          self.get(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
         end
@@ -89,6 +101,9 @@ module AmocrmRails
         if e.response.try(:code) == 401 && first_time
           AmocrmRails.generate_access_token
           self.delete(params: params, headers: headers, first_time: false)
+        elsif e.response.try(:code) == 429
+          sleep(1.second)
+          self.delete(params: params, headers: headers, body: body, first_time: false)
         else
           handle_error(e)
         end
@@ -211,7 +226,7 @@ module AmocrmRails
     end
 
     def base_api_url
-      "#{AmocrmRails.api_endpoint}/api/v2/"
+      "#{AmocrmRails.api_endpoint}/api/v4/"
     end
   end
 end

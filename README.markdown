@@ -15,128 +15,106 @@
 Вы можете изменять `timeout`, `open_timeout`, `faraday_adapter`, `proxy`, `symbolize_keys`, `logger`, и `debug`:
 
 ```ruby
-AmocrmRals::Request.timeout = 15
-AmocrmRals::Request.open_timeout = 15
-AmocrmRals::Request.symbolize_keys = true
-AmocrmRals::Request.debug = false
+AmocrmRails::Request.timeout = 15
+AmocrmRails::Request.open_timeout = 15
+AmocrmRails::Request.symbolize_keys = true
+AmocrmRails::Request.debug = false
 ```
 в файле `config/initializers/amocrm.rb`
 
-## Списки
-
-### Добавление, обновление и удаление списков
-#### Добавление
+## Параметры аккаунта
 ```ruby
-items = [
-  {
-    name: "Товары"
-  }
-]
-body = {
-  add: items
+params = {
+  with: 'amojo_id,amojo_rights,users_groups,task_types,version,entity_names,datetime_settings'
 }
-response = AmocrmRails::Request.catalogs.create(body: body)
-items.map!.with_index { |item, index| item.merge(response.body[:_embedded][:items][index]) }
-```
-#### Обновление
-```
-items.each do |item| 
-  item[:name].insert(-1, ' updated')
-  item.delete(:_links)
-end
-
-body = {
-   update: items
-}
-response = AmocrmRails::Request.catalogs.create(body: body)
-item_ids = response.body[:_embedded][:items].map{ |item| item[:id] }
-```
-
-#### Удаление
-```
-🤦🤦🤦
-body = "{\"delete\": [{#{item_ids.join(',')}]}"
-AmocrmRails::Request.catalogs.create(body: body)
-```
-
-### Перечень списков
-```ruby
-response = AmocrmRails::Request.catalogs.retrieve
-p(response.body)
-item_ids = response.body[:_embedded][:items].map{|item| item[:id]}
-```
-
-## Методы элементов списка
-
-### Добавление, обновление и удаление элементов списка
-
-#### Добавление элементов
-```ruby
-body = {
-   add: [
-      {
-         catalog_id: item_ids.first,
-         name: "Карандаш"
-      }
-   ]
-}
-response = AmocrmRails::Request.catalog_elements.create(body: body)
-p(response.body)
-catalog_element_ids = response.body[:_embedded][:items].map{|item| item[:id]}
-```
-
-#### Обновление элементов
-```ruby
-body = {
-  update: [
-      {
-         catalog_id: item_ids.first,
-         id: catalog_element_ids.first,
-         name: "Ручка"
-      }
-   ]
-}
-response = AmocrmRails::Request.catalog_elements.create(body: body)
+response = AmocrmRails::Request.account.retrieve(params: params)
 p(response.body)
 ```
 
-#### Удаление элементов
-
-```ruby
-body = {
-  delete: [catalog_element_ids.first]
-}
-response = AmocrmRails::Request.catalog_elements.create(body: body)
-p(response.body)
-```
-
-### Перечень элементов списка
+## Сделки
+### [Список сделок](https://www.amocrm.ru/developers/content/crm_platform/leads-api)
 
 ```ruby
 params = {
-  catalog_id: item_ids.first
+  with: 'catalog_elements',
+  page: 0,
+  limit: 10
 }
-response = AmocrmRails::Request.catalog_elements.retrieve(params: params)
+response = AmocrmRails::Request.leads.retrieve(params: params)
 p(response.body)
-items = response.body[:_embedded][:items]
+leads = response.body[:_embedded][:leads]
+lead_id = leads.first[:id]
+```
+### [Получение сделки по ID](https://www.amocrm.ru/developers/content/crm_platform/leads-api#lead-detail)
+
+```ruby
+params = {
+  with: 'catalog_elements'
+}
+response = AmocrmRails::Request.leads(lead_id).retrieve(params: params)
+p(response.body)
+```
+### [Добавление сделок](https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-add)
+
+```ruby
+body = [
+    {
+        "name": "Сделка для примера 1",
+        "created_by": 0,
+        "price": 20000
+    },
+    {
+        "name": "Сделка для примера 2",
+        "price": 10000
+    }
+]
+response = AmocrmRails::Request.leads.create(body: body)
+p(response.body)
+leads = response.body[:_embedded][:leads]
 ```
 
-## Товары
+### [Комплексное добавление сделок с контактом и компанией](https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-complex-add)
 
-### Включение функционала
+```ruby
+body = [
+  {
+    name: "Название сделки",
+    price: 3422,
+    created_at: 1608905348
+  },
+  {
+    name: "Название сделки",
+    price: 3422
+  }
+]
+response = AmocrmRails::Request.leads.complex.create(body: body)
+p(response.body)
+```
+
+### [Редактирование сделок](https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit)
+```ruby
+body = [
+    {
+      id: 666749,
+      closed_at: 1589297221
+    },
+    {
+      id: 666753,
+      price: 50000
+    }
+]
+response = AmocrmRails::Request.leads.update(body: body)
+p(response.body)
+leads = response.body[:_embedded][:leads]
+```
+
+### [Редактирование сделки](https://www.amocrm.ru/developers/content/crm_platform/leads-api#leads-edit)
 
 ```ruby
 body = {
-  enabled: true
+  closed_at: 1589297221
 }
-response = AmocrmRails::Request.products_settings.create(body: body)
+response = AmocrmRails::Request.leads(666749).update(body: body)
 p(response.body)
-catalog_product_id = response.body[:catalog_id]
-```
-
-### Статус активности функционала
-
-```ruby
-response = AmocrmRails::Request.products_settings.retrieve
-p(response.body)
+leads = response.body[:_embedded][:leads]
 ```

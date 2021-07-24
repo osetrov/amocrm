@@ -118,6 +118,36 @@
     9. [Добавление транзакций к покупателю](#transactions_add)
     10. [Удаление транзакции](#transaction_delete)
     11. [Списание/начисление бонусных баллов покупателю](#customer_bonus_points_update)
+15. [Статусы и сегменты покупателей](#customers_statuses)
+    1. [Список статусов покупателей](#customers_statuses_list)
+    2. [Получение статуса покупателей по ID](#customers_statuses_detail)
+    3. [Добавление статусов в воронку](#customers_statuses_add)
+    4. [Редактирование статуса покупателей](#customers_statuses_edit)
+    5. [Удаление статуса покупателей](#customer_status_delete)
+    6. [Список сегментов покупателей](#segments_list)
+    7. [Получение сегмента покупателей по ID](#segments_detail)
+    8. [Добавление сегмента покупателей](#segments_add)
+    9. [Редактирование сегмента покупателей](#segments_edit)
+    10. [Удаление сегмента покупателей](#segment_delete)
+    11. [Доступные цвета статусов](#customers_statuses_colors)
+    12. [Доступные цвета сегментов](#customers_statuses_colors)
+16. [Пользователи](#users)
+    1. [Список пользователей](#users_list)
+    2. [Получение пользователя по ID](#users_detail)
+    3. [Добавление пользователей](#users_add)
+    4. [Список ролей пользователей](#roles_list)
+    5. [Получение роли по ID](#roles_detail)
+    6. [Добавление ролей](#roles_add)
+    7. [Редактирование роли](#roles_edit)    
+    8. [Удаление роли](#roles_delete)
+    9. [Общие обозначения прав пользователей](#users_common_rights)   
+    10. [Зависимости прав пользователей](#users_rights_dependence)
+
+
+
+
+
+
 
 ## <a name="install"></a> Установка
 
@@ -1827,3 +1857,33 @@ body = {
 response = AmocrmRails::Request.customers(customer_id).bonus_points.create(body: body)
 p(response.body)
 ```
+## <a name="customers_statuses"></a> [Статусы и сегменты покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api)
+### <a name="customers_statuses_list"></a> [Список статусов покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-statuses-list)
+```ruby
+response = AmocrmRails::Request.customers.statuses.retrieve
+statuses = response.body[:_embedded][:statuses]
+status_id = statuses.first[:id]
+```
+### <a name="customers_statuses_detail"></a> [Получение статуса покупателей по ID](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customer-status-detail)
+### <a name="customers_statuses_add"></a> [Добавление статусов в воронку](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-statuses-add)
+### <a name="customers_statuses_edit"></a> [Редактирование статуса покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-status-edit)
+### <a name="customer_status_delete"></a> [Удаление статуса покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customer-status-delete)
+### <a name="segments_list"></a> [Список сегментов покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segments-list)
+### <a name="segments_detail"></a> [Получение сегмента покупателей по ID](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-detail)
+### <a name="segments_add"></a> [Добавление сегмента покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-add)
+### <a name="segments_edit"></a> [Редактирование сегмента покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-edit)
+### <a name="segment_delete"></a> [Удаление сегмента покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-delete)
+### <a name="customers_statuses_colors"></a> [Доступные цвета статусов](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-statuses-colors)
+### <a name="customers_statuses_colors"></a> [Доступные цвета сегментов](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segments-colors)
+
+## <a name="users"></a> [Пользователи](https://www.amocrm.ru/developers/content/crm_platform/users-api)
+### <a name="users_list"></a> [Список пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#users-list)
+### <a name="users_detail"></a> [Получение пользователя по ID](https://www.amocrm.ru/developers/content/crm_platform/users-api#user-detail)
+### <a name="users_add"></a> [Добавление пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#users-add)
+### <a name="roles_list"></a> [Список ролей пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#roles-list)
+### <a name="roles_detail"></a> [Получение роли по ID](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-detail)
+### <a name="roles_add"></a> [Добавление ролей](https://www.amocrm.ru/developers/content/crm_platform/users-api#roles-add)
+### <a name="roles_edit></a> [Редактирование роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-edit)
+### <a name="roles_delete></a> [Удаление роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-delete)
+### <a name="users_common_rights></a> [Общие обозначения прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#common-rights)
+### <a name="users_rights_dependence></a> [Зависимости прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#rights-dependence)

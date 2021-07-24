@@ -53,7 +53,18 @@
     3. [Добавление компаний](#companies_add)
     4. [Редактирование компаний](#companies_edit)
     5. [Редактирование компании](#company_edit)
-
+8. [Списки](#catalogs)
+    1. [Доступные списки](#catalogs_list)
+    2. [Получение списка по ID](#catalogs_detail)
+    3. [Добавление списков](#catalogs_add)
+    4. [Редактирование списков](#catalogs_edit)
+    5. [Редактирование списка](#catalog_edit)
+    6. [Доступные элементы списка](#catalog_elements_list)
+    7. [Получение элемента списка по ID](#catalog_elements_list_detail)
+    8. [Добавление элементов списков](#catalog_elements_add)
+    9. [Редактирование элементов списков](#catalog_elements_edit)
+    10. [Редактирование элемента списка](#catalog_element_edit)
+   
 ## <a name="install"></a> Установка
 
 добавьте в Gemfile:
@@ -607,4 +618,111 @@ response = AmocrmRails::Request.companies(company_id).update(body: body)
 p(response.body)
 company_id = response.body[:id]
 ```
-
+## <a name="catalogs"></a> [Списки](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api)
+### <a name="catalogs_list"></a> [Доступные списки](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#lists-list)
+```ruby
+params = {
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.catalogs.retrieve(params: params)
+p(response.body)
+catalogs = response.body[:_embedded][:catalogs]
+catalog_id = catalogs.first[:id]
+```
+### <a name="catalogs_detail"></a> [Получение списка по ID](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#list-detail)
+```ruby
+response = AmocrmRails::Request.catalogs(catalog_id).retrieve
+p(response.body)
+```
+### <a name="catalogs_add"></a> [Добавление списков](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#lists-add)
+```ruby
+body = [
+  {
+    name: "Тестовый список",
+    can_add_elements: true,
+    can_link_multiple: false
+  }
+]
+response = AmocrmRails::Request.catalogs.create(body: body)
+p(response.body)
+catalogs = response.body[:_embedded][:catalogs]
+catalog_id = catalogs.first[:id]
+```
+### <a name="catalogs_edit"></a> [Редактирование списков](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#lists-edit)
+```ruby
+body = [
+  { 
+    id: catalog_id,     
+    name: "Новое имя списка"
+  }
+]
+response = AmocrmRails::Request.catalogs.update(body: body)
+p(response.body)
+catalogs = response.body[:_embedded][:catalogs]
+catalog_id = catalogs.first[:id]
+```
+### <a name="catalog_edit"></a> [Редактирование списка](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#lists-edit)
+```ruby
+body = {
+  name: "Новое имя списка"
+}
+response = AmocrmRails::Request.catalogs(catalog_id).update(body: body)
+p(response.body)
+catalog_id = response.body[:id]
+```
+### <a name="catalog_elements_list"></a> [Доступные элементы списка](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#list-elements-list)
+```ruby
+params = { 
+  with: 'invoice_link',      
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.catalogs(catalog_id).elements.retrieve(params: params)
+p(response.body)
+elements = response.body[:_embedded][:elements]
+element_id = elements.first[:id]
+```
+### <a name="catalog_elements_list_detail"></a> [Получение элемента списка по ID](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#list-elements-detail)
+```ruby
+params = { 
+  with: 'invoice_link'
+}
+response = AmocrmRails::Request.catalogs(catalog_id).elements(element_id).retrieve(params: params)
+p(response.body)
+element_id = response.body[:id]
+```
+### <a name="catalog_elements_add"></a> [Добавление элементов списков](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#list-elements-add)
+```ruby
+body = [
+  {
+    name: "Новый элемент списка"
+  }
+]
+response = AmocrmRails::Request.catalogs(catalog_id).elements.create(body: body)
+p(response.body)
+elements = response.body[:_embedded][:elements]
+element_id = elements.first[:id]
+```
+### <a name="catalog_elements_edit"></a> [Редактирование элементов списков](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#list-elements-edit)
+```ruby
+body = [
+  { 
+    id: element_id,
+    name: "Новое имя элемента"
+  }
+]
+response = AmocrmRails::Request.catalogs(catalog_id).elements.update(body: body)
+p(response.body)
+elements = response.body[:_embedded][:elements]
+element_id = elements.first[:id]
+```
+### <a name="catalog_element_edit"></a> [Редактирование элемента списка](https://www.amocrm.ru/developers/content/crm_platform/catalogs-api#list-elements-edit)
+```ruby
+body = { 
+  name: "Новое имя элемента"
+}
+response = AmocrmRails::Request.catalogs(catalog_id).elements(element_id).update(body: body)
+p(response.body)
+element_id = response.body[:id]
+```

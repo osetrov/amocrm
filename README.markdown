@@ -78,6 +78,19 @@
     4. [Редактирование задач](#tasks_edit)
     5. [Редактирование задачи](#task_edit)
     6. [Выполнение задачи](#task_complete)
+11. [Поля и группы полей](#custom_fields)
+    1. [Список полей сущности](#custom_fields_list)
+    2. [Получение поля сущности по его ID](#custom_fields_detail)
+    3. [Создание дополнительных полей сущности](#custom_fields_add)
+    4. [Редактирование дополнительных полей сущности](#custom_fields_edit)
+    5. [Удаление дополнительного поля](#custom_fields_delete)
+    6. [Список групп полей сущности](#custom_fields_groups_list)
+    7. [Получение группы полей сущности по ID группы](#custom_fields_groups_detail)
+    8. [Создание групп полей](#custom_fields_groups_add)
+    9. [Редактирование группы полей](#custom_fields_groups_edit)
+    10. [Удаление группы дополнительных полей](#custom_fields_groups_delete)
+    11. [Доступные типы полей](#custom_fields_types)
+    12. [Примеры заполнения разных типов полей через API](#custom_fields_examples)
 
 ## <a name="install"></a> Установка
 
@@ -979,6 +992,265 @@ body = {
 response = AmocrmRails::Request.tasks(task_id).update(body: body)
 task = response.body
 ```
+## <a name="custom_fields"></a> [Поля и группы полей](https://www.amocrm.ru/developers/content/crm_platform/custom-fields)
+### <a name="custom_fields_list"></a> [Список полей сущности](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-list)
+```ruby
+response = AmocrmRails::Request.leads.custom_fields.retrieve
+```
+```ruby
+response = AmocrmRails::Request.contacts.custom_fields.retrieve
+```
+```ruby
+response = AmocrmRails::Request.companies.custom_fields.retrieve
+```
+```ruby
+response = AmocrmRails::Request.customers.custom_fields.retrieve
+```
+```ruby
+response = AmocrmRails::Request.customers.segments.custom_fields.retrieve
+```
+```ruby
+response = AmocrmRails::Request.catalogs(catalog_id).custom_fields.retrieve
+```
+```ruby
+custom_fields = response.body[:_embedded][:custom_fields]
+```
+### <a name="custom_fields_detail"></a> [Получение поля сущности по его ID](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-field-detail)
+```ruby
+response = AmocrmRails::Request.leads.custom_fields(id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.contacts.custom_fields(id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.companies.custom_fields(id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.customers.custom_fields(id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.customers.segments.custom_fields(id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.catalogs(catalog_id).custom_fields(id).retrieve
+```
+```ruby
+custom_fields = response.body
+```
+### <a name="custom_fields_add"></a> [Создание дополнительных полей сущности](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-add)
+```ruby
+body = [
+ {
+   name: "multi select",
+   type: "multiselect",
+   sort: 510,
+   required_statuses: [
+   {
+     pipeline_id: 16056,
+     status_id: 20540473
+   }
+  ],
+   enums: [
+   {
+     value: "Значение 1",
+     sort: 1
+   },
+   {
+     value: "Значение 2",
+     sort: 2
+   }
+  ]
+ }
+]
+```
+```ruby
+response = AmocrmRails::Request.leads.custom_fields.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.contacts.custom_fields.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.companies.custom_fields.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.customers.custom_fields.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.customers.segments.custom_fields.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.catalogs(catalog_id).custom_fields.create(body: body)
+```
+```ruby
+custom_fields = response.body[:_embedded][:custom_fields]
+```
+### <a name="custom_fields_edit"></a> [Редактирование дополнительных полей сущности](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-edit)
+```ruby
+custom_field_id = 1278898087
+body_items = [{
+        "id": custom_field_id,
+        "name": "Новое имя для дополнительного поля",
+        "sort": 560,
+        "is_visible": false,
+        "is_required": true
+}]
+body_item = {
+        "name": "Новое имя для дополнительного поля",
+        "sort": 560,
+        "is_visible": false,
+        "is_required": true
+}
+```
+```ruby
+AmocrmRails::Request.leads.custom_fields.update(body: body_items)
+AmocrmRails::Request.leads.custom_fields(custom_field_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.contacts.custom_fields.update(body: body_items)
+AmocrmRails::Request.contacts.custom_fields(custom_field_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.companies.custom_fields.update(body: body_items)
+AmocrmRails::Request.companies.custom_fields(custom_field_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.customers.custom_fields.update(body: body_items)
+AmocrmRails::Request.customers.custom_fields(custom_field_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.customers.segments.custom_fields.update(body: body_items)
+AmocrmRails::Request.customers.segments.custom_fields(custom_field_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.catalogs(catalog_id).custom_fields.update(body: body_items)
+AmocrmRails::Request.catalogs(catalog_id).custom_fields(custom_field_id).update(body: body_item)
+```
+### <a name="custom_fields_delete"></a> [Удаление дополнительного поля](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-field-delete)
+
+```ruby
+AmocrmRails::Request.leads.custom_fields(custom_field_id).delete
+```
+```ruby
+AmocrmRails::Request.contacts.custom_fields(custom_field_id).delete
+```
+```ruby
+AmocrmRails::Request.companies.custom_fields(custom_field_id).delete
+```
+```ruby
+AmocrmRails::Request.customers.custom_fields(custom_field_id).delete
+```
+```ruby
+AmocrmRails::Request.customers.segments.custom_fields(custom_field_id).delete
+```
+```ruby
+AmocrmRails::Request.catalogs(catalog_id).custom_fields(custom_field_id).delete
+```
+### <a name="custom_fields_groups_list"></a> [Список групп полей сущности](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-groups-list)
+```ruby
+response = AmocrmRails::Request.leads.custom_fields.groups.retrieve
+```
+```ruby
+response = AmocrmRails::Request.contacts.custom_fields.groups.retrieve
+```
+```ruby
+response = AmocrmRails::Request.companies.custom_fields.groups.retrieve
+```
+```ruby
+response = AmocrmRails::Request.customers.custom_fields.groups.retrieve
+```
+```ruby
+custom_field_groups = response[:_embedded][:custom_field_groups]
+group_id = custom_field_groups.first.id
+```
+### <a name="custom_fields_groups_detail"></a> [Получение группы полей сущности по ID группы](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-group-detail)
+```ruby
+response = AmocrmRails::Request.leads.custom_fields.groups(group_id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.contacts.custom_fields.groups(group_id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.companies.custom_fields.groups(group_id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.customers.custom_fields.groups(group_id).retrieve
+```
+```ruby
+group_id = response[:id]
+```
+### <a name="custom_fields_groups_add"></a> [Создание групп полей](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-groups-add)
+
+```ruby
+body = [
+  {
+    name: "group 1",
+    sort: 4
+  },
+  {
+    name: "group 2",
+    sort: 5
+  }
+]
+```
+```ruby
+response = AmocrmRails::Request.leads.custom_fields.groups.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.contacts.custom_fields.groups.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.companies.custom_fields.groups.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.customers.custom_fields.groups.create(body: body)
+```
+```ruby
+custom_field_groups = response.body[:_embedded][:custom_field_groups]
+custom_field_group_id = custom_field_groups.first[:id]
+```
+### <a name="custom_fields_groups_edit"></a> [Редактирование группы полей](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-group-edit)
+
+```ruby
+body = {
+  sort: 6,
+  fields: [
+    14563,
+    12575
+  ]
+}
+```
+```ruby
+response = AmocrmRails::Request.leads.custom_fields.groups(custom_field_group_id).update(body: body)
+```
+```ruby
+response = AmocrmRails::Request.contacts.custom_fields.groups(custom_field_group_id).update(body: body)
+```
+```ruby
+response = AmocrmRails::Request.companies.custom_fields.groups(custom_field_group_id).update(body: body)
+```
+```ruby
+response = AmocrmRails::Request.customers.custom_fields.groups(custom_field_group_id).update(body: body)
+```
+```ruby
+custom_field_groups = response.body[:_embedded][:custom_field_groups]
+custom_field_group_id = custom_field_groups.first.id
+```
+### <a name="custom_fields_groups_delete"></a> [Удаление группы дополнительных полей](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-group-delete)
+
+```ruby
+AmocrmRails::Request.leads.custom_fields.groups(custom_field_group_id).delete
+```
+```ruby
+AmocrmRails::Request.contacts.custom_fields.groups(custom_field_group_id).delete
+```
+```ruby
+AmocrmRails::Request.companies.custom_fields.groups(custom_field_group_id).delete
+```
+```ruby
+AmocrmRails::Request.customers.custom_fields.groups(custom_field_group_id).delete
+```
+### <a name="custom_fields_types"></a> [Доступные типы полей](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#cf-types)
+### <a name="custom_fields_examples"></a> [Примеры заполнения разных типов полей через API](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#cf-fill-examples)
 
 
 

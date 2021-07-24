@@ -33,6 +33,12 @@
     10. [Редактирование статуса воронки](#leads_pipelines_statuses_edit)
     11. [Удаление статуса воронки](#leads_pipelines_statuses_delete)
     12. [Доступные цвета статусов](#leads_pipelines_statuses_colors)
+5. [Фильтрация](#filters)
+    1. [Фильтрация списка сделок](#filters_leads)
+    2. [Фильтрация списка контактов](#filters_contacts)
+    3. [Фильтрация списка компаний](#filters_companies)
+    4. [Фильтрация списка покупателей](#filters_customers)
+    5. [Типы фильтров](#filters_types)
 
 ## <a name="install"></a> Установка
 
@@ -409,3 +415,54 @@ p(response.body)
 AmocrmRails::Request.leads.pipelines(pipeline_id).statuses(status_id).delete
 ```
 ### <a name="leads_pipelines_statuses_colors"></a> [Доступные цвета статусов](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#statuses-colors)
+
+## <a name="filters"></a> [Фильтрация](https://www.amocrm.ru/developers/content/crm_platform/filters-api)
+### <a name="filters_leads"></a> [Фильтрация списка сделок](https://www.amocrm.ru/developers/content/crm_platform/filters-api#leads-filter)
+```ruby
+params = {
+  filter: { 
+    id: lead_id
+  }
+}
+response = AmocrmRails::Request.leads.retrieve(params: params)
+p(response.body)
+leads = response.body[:_embedded][:leads]
+```
+### <a name="filters_contacts"></a> [Фильтрация списка контактов](https://www.amocrm.ru/developers/content/crm_platform/filters-api#contacts-filter)
+```ruby
+params = {
+  filter: { 
+    name: "Павел Осетров"
+  }
+}
+response = AmocrmRails::Request.contacts.retrieve(params: params)
+p(response.body)
+contacts = response.body[:_embedded][:contacts]
+```
+### <a name="filters_companies"></a> [Фильтрация списка компаний](https://www.amocrm.ru/developers/content/crm_platform/filters-api#companies-filter)
+```ruby
+params = {
+  filter: { 
+    name: "ОАО Коспромсервис"
+  }
+}
+response = AmocrmRails::Request.companies.retrieve(params: params)
+p(response.body)
+companies = response.body[:_embedded][:companies]
+```
+### <a name="filters_customers"></a> [Фильтрация списка покупателей](https://www.amocrm.ru/developers/content/crm_platform/filters-api#customers-filter)
+```ruby
+params = {
+  filter: { 
+    name: "Павел Осетров"
+  }
+}
+response = AmocrmRails::Request.customers.retrieve(params: params)
+p(response.body)
+customers = response.body[:_embedded][:customers]
+```
+### <a name="filters_types"></a> [Типы фильтров](https://www.amocrm.ru/developers/content/crm_platform/filters-api#filter-types)
+
+
+
+

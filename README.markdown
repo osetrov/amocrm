@@ -15,8 +15,8 @@
 Вы можете изменять `timeout`, `open_timeout`, `faraday_adapter`, `proxy`, `symbolize_keys`, `logger`, и `debug`:
 
 ```ruby
-AmocrmRails::Request.timeout = 15
-AmocrmRails::Request.open_timeout = 15
+AmocrmRails::Request.timeout = 60
+AmocrmRails::Request.open_timeout = 60
 AmocrmRails::Request.symbolize_keys = true
 AmocrmRails::Request.debug = false
 ```

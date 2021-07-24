@@ -15,8 +15,8 @@ AmocrmRails.setup do |config|
       end
     end
 
-    config::Request.timeout = 15
-    config::Request.open_timeout = 15
+    config::Request.timeout = 60
+    config::Request.open_timeout = 60
     config::Request.symbolize_keys = true
     config::Request.debug = false
   end

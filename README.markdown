@@ -21,6 +21,18 @@
     8. [Сводная информация о неразобранных сделках](#unsorted_summary)
     9. [Описание объектов metadata](#unsorted_meta)
 4. [Воронки и этапы](#leads_pipelines)
+    1. [Общая информация](#leads_pipelines_info)
+    2. [Список воронок сделок](#leads_pipelines_list)
+    3. [Получение воронки сделок по ID](#leads_pipelines_detail)
+    4. [Добавление воронок](#leads_pipelines_add)
+    5. [Редактирование воронки](#leads_pipelines_edit)
+    6. [Удаление воронки](#leads_pipelines_delete)
+    7. [Список статусов воронки сделок](#leads_pipelines_statuses_list)
+    8. [Получение статуса воронки сделок по ID](#leads_pipelines_statuses_detail)
+    9. [Добавление статусов в воронку](#leads_pipelines_statuses_add)
+    10. [Редактирование статуса воронки](#leads_pipelines_statuses_edit)
+    11. [Удаление статуса воронки](#leads_pipelines_statuses_delete)
+    12. [Доступные цвета статусов](#leads_pipelines_statuses_colors)
 
 ## <a name="install"></a> Установка
 
@@ -44,7 +56,7 @@ AmocrmRails::Request.debug = false
 ```
 в файле `config/initializers/amocrm.rb`
 
-## <a name="account"></a> Параметры аккаунта
+## <a name="account"></a> [Параметры аккаунта](https://www.amocrm.ru/developers/content/crm_platform/account-info)
 ```ruby
 params = {
   with: 'amojo_id,amojo_rights,users_groups,task_types,version,entity_names,datetime_settings'
@@ -294,3 +306,106 @@ p(response.body)
 ### <a name="unsorted_meta"></a> [Описание объектов metadata](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#metadata-description)
 
 ## <a name="leads_pipelines"></a> Воронки и этапы
+
+### <a name="leads_pipelines_info"></a> [Общая информация](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#common-info)
+### <a name="leads_pipelines_list"></a> [Список воронок сделок](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#pipelines-list)
+```ruby
+response = AmocrmRails::Request.leads.pipelines.retrieve
+p(response.body)
+pipelines = response.body[:_embedded][:pipelines]
+pipeline_id = pipelines.first[:id]
+```
+### <a name="leads_pipelines_detail"></a> [Получение воронки сделок по ID](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#pipeline-detail)
+```ruby
+response = AmocrmRails::Request.leads.pipelines(pipeline_id).retrieve
+p(response.body)
+```
+### <a name="leads_pipelines_add"></a> [Добавление воронок](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#pipelines-add)
+```ruby
+body = [
+  {
+    name: "Воронка доп продаж",
+    is_main: false,
+    is_unsorted_on: true,
+    sort: 20,
+    request_id: "123",
+    _embedded: {
+      statuses: [
+        {
+          id: 142,
+          name: "Мое название для успешных сделок"
+        },
+        {
+          name: "Первичный контакт",
+          sort: 10,
+          color: "#fffeb2"
+        }
+      ]
+    }
+  }
+]
+response = AmocrmRails::Request.leads.pipelines.create(body: body)
+p(response.body)
+pipelines = response.body[:_embedded][:pipelines]
+pipeline_id = pipelines.first[:id]
+```
+### <a name="leads_pipelines_edit"></a> [Редактирование воронки](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#pipeline-edit)
+```ruby
+body = {
+        "name": "Новое название для воронки",
+        "is_main": false,
+        "is_unsorted_on": false,
+        "sort": 100
+}
+response = AmocrmRails::Request.leads.pipelines(pipeline_id).update(body: body)
+p(response.body)
+```
+### <a name="leads_pipelines_delete"></a> [Удаление воронки](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#pipeline-delete)
+```ruby
+AmocrmRails::Request.leads.pipelines(pipeline_id).delete
+```
+### <a name="leads_pipelines_statuses_list"></a> [Список статусов воронки сделок](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#statuses-list)
+```ruby
+response = AmocrmRails::Request.leads.pipelines(pipeline_id).statuses.retrieve
+p(response.body)
+statuses = response.body[:_embedded][:statuses]
+status_id = statuses.first[:id]
+```
+### <a name="leads_pipelines_statuses_detail"></a> [Получение статуса воронки сделок по ID](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#status-detail)
+```ruby
+response = AmocrmRails::Request.leads.pipelines(pipeline_id).statuses(status_id).retrieve
+p(response.body)
+```
+### <a name="leads_pipelines_statuses_add"></a> [Добавление статусов в воронку](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#statuses-add)
+```ruby
+body = [
+        {
+                "name": "Новый этап",
+                "sort": 100,
+                "color": "#fffeb2"
+        },
+        {
+                "name": "Новый этап 2",
+                "sort": 200,
+                "color": "#fffeb2"
+        }
+]
+response = AmocrmRails::Request.leads.pipelines(pipeline_id).statuses.create(body: body)
+p(response.body)
+statuses = response.body[:_embedded][:statuses]
+status_id = statuses.first[:id]
+```
+### <a name="leads_pipelines_statuses_edit"></a> [Редактирование статуса воронки](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#status-edit)
+```ruby
+body = {
+        "name": "Новое название для статуса",
+        "color": "#c1e0ff"
+}
+response = AmocrmRails::Request.leads.pipelines(pipeline_id).statuses(status_id).update(body: body)
+p(response.body)
+```
+### <a name="leads_pipelines_statuses_delete"></a> [Удаление статуса воронки](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#status-delete)
+```ruby
+AmocrmRails::Request.leads.pipelines(pipeline_id).statuses(status_id).delete
+```
+### <a name="leads_pipelines_statuses_colors"></a> [Доступные цвета статусов](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#statuses-colors)

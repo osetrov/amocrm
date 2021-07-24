@@ -64,7 +64,14 @@
     8. [Добавление элементов списков](#catalog_elements_add)
     9. [Редактирование элементов списков](#catalog_elements_edit)
     10. [Редактирование элемента списка](#catalog_element_edit)
-   
+9. [Связи сущностей](#links)
+    1. [Список связанных сущностей](#links_list)
+    2. [Привязка сущностей](#links_link)
+    3. [Отвязка сущностей](#links_link)
+    4. [Массовый список связанных сущностей](#mass_links_list)
+    5. [Массовая привязка сущностей](#mass_links_link)
+    6. [Массовая отвязка сущностей](#mass_links_unlink)
+
 ## <a name="install"></a> Установка
 
 добавьте в Gemfile:
@@ -726,3 +733,177 @@ response = AmocrmRails::Request.catalogs(catalog_id).elements(element_id).update
 p(response.body)
 element_id = response.body[:id]
 ```
+## <a name="links"></a> [Связи сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api)
+### <a name="links_list"></a> [Список связанных сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-list)
+```ruby
+response = AmocrmRails::Request.leads(lead_id).links.retrieve
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.contacts(contact_id).links.retrieve
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.companies(company_id).links.retrieve
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.customers(customer_id).links.retrieve
+links = response.body[:_embedded][:links]
+```
+### <a name="links_link"></a> [Привязка сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-link)
+```ruby
+body = [
+ {
+   to_entity_id: 10,
+   to_entity_type: "catalog_elements",
+   metadata: {
+     quantity: 1,
+     catalog_id: 1026
+  }
+ },
+ {
+   to_entity_id: 457282,
+   to_entity_type: "contacts",
+   metadata: {
+     is_main: true,
+  }
+ }
+]
+```
+```ruby
+response = AmocrmRails::Request.leads(lead_id).link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.contacts(contact_id).link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.companies(company_id).link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.customers(customer_id).link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+### <a name="links_unlink"></a> [Отвязка сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-unlink)
+```ruby
+body = [
+  {
+    to_entity_id: 10,
+    to_entity_type: "catalog_elements",
+    metadata: {
+      catalog_id: 1026
+    }
+  },
+  {
+    to_entity_id: 457282,
+    to_entity_type: "contacts",
+  }
+]
+```
+```ruby
+response = AmocrmRails::Request.leads(lead_id).unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.contacts(contact_id).unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.companies(company_id).unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.customers(customer_id).unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+### <a name="mass_links_list"></a> [Массовый список связанных сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#mass-links-list)
+```ruby
+response = AmocrmRails::Request.leads.links.retrieve
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.contacts.links.retrieve
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.companies.links.retrieve
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.customers.links.retrieve
+links = response.body[:_embedded][:links]
+```
+### <a name="mass_links_link"></a> [Массовая привязка сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#mass-links-link)
+```ruby
+body = [
+  {
+    entity_id: 14158851,
+    to_entity_id: 10,
+    to_entity_type: "catalog_elements",
+    metadata: {
+      quantity: 1,
+      catalog_id: 1026
+    }
+  },
+  {
+    entity_id: 14158852,
+    to_entity_id: 457282,
+    to_entity_type: "contacts",
+    metadata: {
+      is_main: true,
+    }
+  }
+]
+```
+```ruby
+response = AmocrmRails::Request.leads.link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.contacts.link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.companies.link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.customers.link.create(body: body)
+links = response.body[:_embedded][:links]
+```
+### <a name="mass_links_unlink"></a> [Массовая отвязка сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#mass-links-unlink)
+```ruby
+body = [
+  {
+    to_entity_id: 10,
+    to_entity_type: "catalog_elements",
+    metadata: {
+      catalog_id: 1026
+    }
+  },
+  {
+    to_entity_id: 457282,
+    to_entity_type: "contacts",
+  }
+]
+```
+```ruby
+response = AmocrmRails::Request.leads.unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.contacts.unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.companies.unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+```ruby
+response = AmocrmRails::Request.customers.unlink.create(body: body)
+links = response.body[:_embedded][:links]
+```
+

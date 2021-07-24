@@ -91,6 +91,11 @@
     10. [Удаление группы дополнительных полей](#custom_fields_groups_delete)
     11. [Доступные типы полей](#custom_fields_types)
     12. [Примеры заполнения разных типов полей через API](#custom_fields_examples)
+12. [Теги](#tags)
+    1. [Список полей сущности](#tags_list)
+    2. [Добавление тегов для конкретного типа сущности](#tags_add)
+    3. [Добавление тегов к сущности](#add_tags_to_entity)
+    4. [Удаление тегов у сущности](#delete_tags_from_entity)
 
 ## <a name="install"></a> Установка
 
@@ -1160,7 +1165,7 @@ response = AmocrmRails::Request.customers.custom_fields.groups.retrieve
 ```
 ```ruby
 custom_field_groups = response[:_embedded][:custom_field_groups]
-group_id = custom_field_groups.first.id
+group_id = custom_field_groups.first[:id]
 ```
 ### <a name="custom_fields_groups_detail"></a> [Получение группы полей сущности по ID группы](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-group-detail)
 ```ruby
@@ -1233,7 +1238,7 @@ response = AmocrmRails::Request.customers.custom_fields.groups(custom_field_grou
 ```
 ```ruby
 custom_field_groups = response.body[:_embedded][:custom_field_groups]
-custom_field_group_id = custom_field_groups.first.id
+custom_field_group_id = custom_field_groups.first[:id]
 ```
 ### <a name="custom_fields_groups_delete"></a> [Удаление группы дополнительных полей](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#custom-fields-group-delete)
 
@@ -1252,5 +1257,131 @@ AmocrmRails::Request.customers.custom_fields.groups(custom_field_group_id).delet
 ### <a name="custom_fields_types"></a> [Доступные типы полей](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#cf-types)
 ### <a name="custom_fields_examples"></a> [Примеры заполнения разных типов полей через API](https://www.amocrm.ru/developers/content/crm_platform/custom-fields#cf-fill-examples)
 
+## <a name="tags"></a> [Теги](https://www.amocrm.ru/developers/content/crm_platform/tags-api)
+### <a name="tags_list"></a> [Список тегов для сущности](https://www.amocrm.ru/developers/content/crm_platform/tags-api#tags-list)
+```ruby
+params = {
+  page: 0,
+  limit: 10
+}
+```
+```ruby
+response = AmocrmRails::Request.leads.tags.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.contacts.tags.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.companies.tags.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.customers.tags.retrieve(params: params)
+```
+```ruby
+tags = response.body[:_embedded][:tags]
+tag_id = tags.first[:id]
+```
+### <a name="tags_add"></a> [Добавление тегов для конкретного типа сущности](https://www.amocrm.ru/developers/content/crm_platform/tags-api#tags-add)
+```ruby
+body = [
+  {
+    "name": "Tag 1"
+  },
+  {
+    "name": "Tag 2",
+    "request_id": "my_request_id"
+  },
+  {
+    "name": "Tag 3"
+  }
+]
+```
+```ruby
+response = AmocrmRails::Request.leads.tags.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.contacts.tags.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.companies.tags.create(body: body)
+```
+```ruby
+response = AmocrmRails::Request.customers.tags.create(body: body)
+```
+```ruby
+tags = response.body[:_embedded][:tags]
+tag_id = tags.first[:id]
+```
+### <a name="add_tags_to_entity"></a> [Добавление тегов к сущности](https://www.amocrm.ru/developers/content/crm_platform/tags-api#add-tags-to-entity)
+```ruby
+body_item = {
+  "_embedded": {
+    "tags": [
+      {
+        "id": tag_id
+      }
+    ]
+  }
+}
+body = [
+  {
+    "id": object_id,
+    "_embedded": {
+      "tags": [
+        {
+          "id": tag_id
+        }
+      ]
+    }
+  }
+]
+```
+```ruby
+AmocrmRails::Request.leads.update(body: body)
+AmocrmRails::Request.leads(lead_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.contacts.update(body: body)
+AmocrmRails::Request.contacts(contact_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.companies.update(body: body)
+AmocrmRails::Request.contacts(company_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.customers.update(body: body)
+AmocrmRails::Request.contacts(customer_id).update(body: body_item)
+```
+### <a name="delete_tags_from_entity"></a> [Удаление тегов у сущности](https://www.amocrm.ru/developers/content/crm_platform/tags-api#delete-tags-from-entity)
 
-
+```ruby
+body_item = {
+  "_embedded": {
+    "tags": nil
+  }
+}
+body = [
+  {
+    "id": object_id,
+    "_embedded": {
+      "tags": nil
+    }
+  }
+]
+```
+```ruby
+AmocrmRails::Request.leads.update(body: body)
+AmocrmRails::Request.leads(lead_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.contacts.update(body: body)
+AmocrmRails::Request.contacts(contact_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.companies.update(body: body)
+AmocrmRails::Request.contacts(company_id).update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.customers.update(body: body)
+AmocrmRails::Request.contacts(customer_id).update(body: body_item)
+```

@@ -27,19 +27,42 @@ AmocrmRals::Request.debug = false
 #### Добавление, обновление и удаление списков
 ##### Добавление
 ```ruby
+items = [
+  {
+    name: "Товары"
+  }
+]
 body = {
-  add: [
-    {
-      name: "Товары"
-    }
-  ]
+  add: items
 }
 response = AmocrmRails::Request.catalogs.create(body: body)
-p(response.body)
+items.map!.with_index { |item, index| item.merge(response.body[:_embedded][:items][index]) }
+```
+##### Обновление
+```
+items.each do |item| 
+  item[:name].insert(-1, ' updated')
+  item.delete(:_links)
+end
+
+body = {
+   update: items
+}
+response = AmocrmRails::Request.catalogs.create(body: body)
+item_ids = response.body[:_embedded][:items].map{ |item| item[:id] }
+```
+
+
+##### Удаление
+```
+🤦🤦🤦
+body = {
+   delete: "{\"delete\": [{#{item_ids.join(',')}}]}"
+}
 ```
 
 #### Перечень списков
 ```ruby
-  response = AmocrmRails::Request.catalogs.retrieve
-  p(response.body)
+response = AmocrmRails::Request.catalogs.retrieve
+p(response.body)
 ```

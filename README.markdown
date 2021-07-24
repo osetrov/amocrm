@@ -106,6 +106,18 @@
     7. [Список примечаний по конкретной сущности, по ID сущности](#notes_entity_list)
     8. [Получение примечания по ID](#note_detail)
     9. [Добавление примечаний](#notes_add)
+14. [Покупатели](#customers)
+    1. [Включение покупателей и смена их режима](#customers_mode)
+    2. [Список покупателей](#customers_list)
+    3. [Получение покупателя по ID](#customers_detail)
+    4. [Добавление покупателей](#customers_add)
+    5. [Редактирование покупателей](#customers_edit)
+    6. [Редактирование покупателя](#customer_edit)
+    7. [Список транзакций](#transactions_list)
+    8. [Получение транзакции по ID](#transactions_detail)
+    9. [Добавление транзакций к покупателю](#transactions_add)
+    10. [Удаление транзакции](#transaction_delete)
+    11. [Списание/начисление бонусных баллов покупателю](#customer_bonus_points_update)
 
 ## <a name="install"></a> Установка
 
@@ -1534,47 +1546,47 @@ note = response.body
 ```ruby
 body = [
   {
-    "entity_id": 167353,
-    "note_type": "call_in",
-    "params": {
-      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
-      "duration": 60,
-      "source": "onlinePBX",
-      "link": "https://example.com",
-      "phone": "+79999999999"
+    entity_id: 167353,
+    note_type: "call_in",
+    params: {
+      uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      duration: 60,
+      source: "onlinePBX",
+      link: "https://example.com",
+      phone: "+79999999999"
     }
   },
   {
-    "entity_id": 167353,
-    "note_type": "call_out",
-    "params": {
-      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
-      "duration": 60,
-      "source": "onlinePBX",
-      "link": "https://example.com",
-      "phone": "+79999999999"
+    entity_id: 167353,
+    note_type: "call_out",
+    params: {
+      uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      duration: 60,
+      source: "onlinePBX",
+      link: "https://example.com",
+      phone: "+79999999999"
     }
   },
   {
-    "entity_id": 167353,
-    "note_type": "geolocation",
-    "params": {
-      "text": "Примечание с геолокацией",
-      "address": "ул. Пушкина, дом Колотушкина, квартира Вольнова",
-      "longitude": "53.714816",
-      "latitude": "91.423146"
+    entity_id: 167353,
+    note_type: "geolocation",
+    params: {
+      text: "Примечание с геолокацией",
+      address: "ул. Пушкина, дом Колотушкина, квартира Вольнова",
+      longitude: "53.714816",
+      latitude: "91.423146"
     }
   }
 ]
 body_item = {
-  "entity_id": 167353,
-  "note_type": "call_in",
-  "params": {
-    "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
-    "duration": 60,
-    "source": "onlinePBX",
-    "link": "https://example.com",
-    "phone": "+79999999999"
+  entity_id: 167353,
+  note_type: "call_in",
+  params: {
+    uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+    duration: 60,
+    source: "onlinePBX",
+    link: "https://example.com",
+    phone: "+79999999999"
   }
 }
 ```
@@ -1605,47 +1617,47 @@ note_id = notes.first[:id]
 ```ruby
 body = [
   {
-    "entity_id": 167353,
-    "note_type": "call_in",
-    "params": {
-      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
-      "duration": 60,
-      "source": "onlinePBX",
-      "link": "https://example.com",
-      "phone": "+79999999999"
+    entity_id: 167353,
+    note_type: "call_in",
+    params: {
+      uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      duration: 60,
+      source: "onlinePBX",
+      link: "https://example.com",
+      phone: "+79999999999"
     }
   },
   {
-    "entity_id": 167353,
-    "note_type": "call_out",
-    "params": {
-      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
-      "duration": 60,
-      "source": "onlinePBX",
-      "link": "https://example.com",
-      "phone": "+79999999999"
+    entity_id: 167353,
+    note_type: "call_out",
+    params: {
+      uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      duration: 60,
+      source: "onlinePBX",
+      link: "https://example.com",
+      phone: "+79999999999"
     }
   },
   {
-    "entity_id": 167353,
-    "note_type": "geolocation",
-    "params": {
-      "text": "Примечание с геолокацией",
-      "address": "ул. Пушкина, дом Колотушкина, квартира Вольнова",
-      "longitude": "53.714816",
-      "latitude": "91.423146"
+    entity_id: 167353,
+    note_type: "geolocation",
+    params: {
+      text: "Примечание с геолокацией",
+      address: "ул. Пушкина, дом Колотушкина, квартира Вольнова",
+      longitude: "53.714816",
+      latitude: "91.423146"
     }
   }
 ]
 body_item = {
-  "entity_id": 167353,
-  "note_type": "call_in",
-  "params": {
-    "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
-    "duration": 60,
-    "source": "onlinePBX",
-    "link": "https://example.com",
-    "phone": "+79999999999"
+  entity_id: 167353,
+  note_type: "call_in",
+  params: {
+    uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+    duration: 60,
+    source: "onlinePBX",
+    link: "https://example.com",
+    phone: "+79999999999"
   }
 }
 ```
@@ -1669,4 +1681,149 @@ AmocrmRails::Request.customers(customer_id).notes.update(body: body_item)
 ```ruby
 notes = response.body[:_embedded][:notes]
 note_id = notes.first[:id]
+```
+
+## <a name="customers"></a> [Покупатели](https://www.amocrm.ru/developers/content/crm_platform/customers-api)
+### <a name="customers_mode"></a> [Включение покупателей и смена их режима](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-mode)
+```ruby
+body = {
+  mode: "segments",
+  is_enabled: true
+}
+response = AmocrmRails::Request.customers.mode.update(body: body)
+p(response.body)
+```
+### <a name="customers_list"></a> [Список покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-list)
+```ruby
+params = {
+  with: 'contacts',
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.customers.retrieve(params: params)
+customers = response.body[:_embedded][:customers]
+customer_id = customers.first[:id]
+```
+### <a name="customers_detail"></a> [Получение покупателя по ID](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customer-detail)
+```ruby
+params = {
+  with: 'contacts'
+}
+response = AmocrmRails::Request.customers(customer_id).retrieve(params: params)
+customer = response.body
+```
+### <a name="customers_add"></a> [Добавление покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-add)
+```ruby
+body = [
+    {
+      name: "Покупатель для примера 1",
+      created_by: 0
+    },
+    {
+      name: "Покупатель для примера 2",
+      _embedded: {
+        tags: [
+                {
+                    "name": "Важный покупатель"
+                }
+            ]
+        }
+    }
+]
+response = AmocrmRails::Request.customers.create(body: body)
+customers = response.body[:_embedded][:customers]
+customer_id = customers.first[:id]
+```
+### <a name="customers_edit"></a> [Редактирование покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-edit)
+```ruby
+body = [
+  {
+    id: customer_id,
+    name: "Новое название покупателя",
+    _embedded: {
+      tags: [
+        {
+          name: "Тег 125"
+        }
+      ]
+    }
+  }
+]
+response = AmocrmRails::Request.customers.update(body: body)
+customers = response.body[:_embedded][:customers]
+customer_id = customers.first[:id]
+```
+### <a name="customer_edit"></a> [Редактирование покупателя](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customers-edit)
+```ruby
+body = {
+  name: "Новое название покупателя",
+  _embedded: {
+    tags: [
+      {
+        name: "Тег 125"
+      }
+    ]
+  }
+}
+response = AmocrmRails::Request.customers(customer_id).update(body: body)
+customer = response.body
+```
+### <a name="transactions_list"></a> [Список транзакций](https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-list)
+```ruby
+params = {
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.customers.transactions.retrieve(params: params)
+response = AmocrmRails::Request.customers(customer_id).transactions.retrieve(params: params)
+
+transactions = response.body[:_embedded][:transactions]
+transaction_id = transactions.first[:id]
+```
+### <a name="transactions_detail"></a> [Получение транзакции по ID](https://www.amocrm.ru/developers/content/crm_platform/customers-api#transaction-detail)
+```ruby
+response = AmocrmRails::Request.customers.transactions(transaction_id).retrieve
+response = AmocrmRails::Request.customers(customer_id).transactions(transaction_id).retrieve
+
+transaction = response.body
+```
+### <a name="transactions_add"></a> [Добавление транзакций к покупателю](https://www.amocrm.ru/developers/content/crm_platform/customers-api#transactions-add)
+```ruby
+body = [
+  {
+    price: 123,
+    created_by: 0,
+    comment: "Комментарий",
+    _embedded: {
+      catalog_elements: [
+        {
+          id: 1677,
+          metadata: {
+            catalog_id: 1079,
+            quantity: 10
+          }
+        }
+      ]
+    }
+  }
+]
+response = AmocrmRails::Request.customers(customer_id).transactions.create(body: body)
+p(response.body)
+transactions = response.body[:_embedded][:transactions]
+transaction_id = transactions.first[:id]
+```
+### <a name="transaction_delete"></a> [Удаление транзакции](https://www.amocrm.ru/developers/content/crm_platform/customers-api#transaction-delete)
+
+```ruby
+response = AmocrmRails::Request.customers.transactions(transaction_id).delete
+p(response.body)
+```
+### <a name="customer_bonus_points_update"></a> [Списание/начисление бонусных баллов покупателю](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customer–bonus-points-update)
+
+```ruby
+body = {
+  earn: 500
+}
+response = AmocrmRails::Request.customers(customer_id).bonus_points.create(body: body)
+p(response.body)
 ```

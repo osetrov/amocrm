@@ -118,3 +118,167 @@ response = AmocrmRails::Request.leads(666749).update(body: body)
 p(response.body)
 leads = response.body[:_embedded][:leads]
 ```
+
+## Неразобранное
+
+### [Список неразобранного](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-list)
+
+```ruby
+params = {
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.leads.unsorted.retrieve(params: params)
+p(response.body)
+unsorted = response.body[:_embedded][:unsorted]
+uid = unsorted.first[:uid]
+```
+
+### [Получение неразобранного по UID](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-detail)
+
+```ruby
+response = AmocrmRails::Request.leads.unsorted(uid).retrieve
+p(response.body)
+```
+
+### [Добавление неразобранного типа звонок](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-add-sip)
+
+```ruby
+body = [
+  {
+    source_name: "ОАО Коспромсервис",
+    source_uid: "a1fee7c0fc436088e64ba2e8822ba2b3",
+    created_at: 1510261200,
+    _embedded: {
+      leads: [
+        {
+          name: "Тех обслуживание",
+          price: 5000
+        }
+      ],
+      contacts: [
+        {
+          name: "Контакт для примера"
+        }
+      ],
+      companies: [
+        {
+          name: "ОАО Коспромсервис"
+        }
+      ]
+    },
+    metadata: {
+      is_call_event_needed: true,
+      uniq: "a1fe231cc88e64ba2e8822ba2b3ewrw",
+      duration: 54,
+      service_code: "CkAvbEwPam6sad",
+      link: "https://example.com",
+      phone: 79998888888,
+      called_at: 1510261200,
+      from: "onlinePBX"
+    }
+  }
+]
+response = AmocrmRails::Request.leads.unsorted.sip.create(body: body)
+p(response.body)
+```
+
+### [Добавление неразобранного типа форма](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-add-form)
+
+```ruby
+body = [
+  {
+    source_name: "ОАО Коспромсервис",
+    source_uid: "a1fee7c0fc436088e64ba2e8822ba2b3",
+    created_at: 1590830520,
+    _embedded: {
+      leads: [
+        {
+          name: "Тех обслуживание",
+          visitor_uid: "5692210d-58d0-468c-acb2-dce7f93eef87",
+          price: 5000,
+          _embedded: {
+            tags: [
+              {
+                name: "Тег для примера"
+              }
+            ]
+          }
+        }
+      ],
+      contacts: [
+        {
+          name: 234,
+          first_name: "123213",
+          last_name: 234,
+          custom_fields_values: [
+            {
+              field_code: "PHONE",
+              values: [
+                {
+                  value: "+7912321323"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      companies: [
+        {
+          name: "ОАО Коспромсервис"
+        }
+      ]
+    },
+    metadata: {
+      ip: "123.222.2.22",
+      form_id: "a1fee7c0fc436088e64ba2e8822ba2b3ewrw",
+      form_sent_at: 1590830520,
+      form_name: "Форма заявки для полёта в космос",
+      form_page: "https://example.com",
+      referer: "https://www.google.com/search?&q=elon+musk"
+    }
+  }
+]
+response = AmocrmRails::Request.leads.unsorted.forms.create(body: body)
+p(response.body)
+uid = response.body[:_embedded][:unsorted].first[:uid]
+```
+
+### [Принятие неразобранного](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-accept)
+
+```ruby
+body = {
+  status_id: 41504311
+}
+response = AmocrmRails::Request.leads.unsorted(uid).accept.create(body: body)
+p(response.body)
+```
+
+### [Отклонение неразобранного](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-decline)
+
+```ruby
+response = AmocrmRails::Request.leads.unsorted(uid).decline.delete
+p(response.body)
+```
+
+### [Привязка неразобранного](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-link)
+
+```ruby
+body = {
+  link: {
+    entity_id: lead_id,
+    entity_type: "leads"
+  }
+}
+response = AmocrmRails::Request.leads.unsorted(uid).link.create(body: body)
+p(response.body)
+```
+
+### [Сводная информация о неразобранных сделках](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#unsorted-summary)
+
+```ruby
+response = AmocrmRails::Request.leads.unsorted.summary.retrieve
+p(response.body)
+```
+
+### [Описание объектов metadata](https://www.amocrm.ru/developers/content/crm_platform/unsorted-api#metadata-description)

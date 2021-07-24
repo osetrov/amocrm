@@ -47,6 +47,12 @@
     5. [Редактирование контакта](#contact_edit)
     6. [Привязка чатов к контактам](#contacts_chat_connect)
     7. [Получение списка чатов контакта](#contacts_chat_list)
+7. [Компании](#companies)
+    1. [Список компаний](#companies_list)
+    2. [Получение компании по ID](#companies_detail)
+    3. [Добавление компаний](#companies_add)
+    4. [Редактирование компаний](#companies_edit)
+    5. [Редактирование компании](#company_edit)
 
 ## <a name="install"></a> Установка
 
@@ -393,16 +399,16 @@ p(response.body)
 ### <a name="leads_pipelines_statuses_add"></a> [Добавление статусов в воронку](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#statuses-add)
 ```ruby
 body = [
-        {
-                "name": "Новый этап",
-                "sort": 100,
-                "color": "#fffeb2"
-        },
-        {
-                "name": "Новый этап 2",
-                "sort": 200,
-                "color": "#fffeb2"
-        }
+  {
+    name: "Новый этап",
+    sort: 100,
+    color: "#fffeb2"
+  },
+  {
+    name: "Новый этап 2",
+    sort: 200,
+    color: "#fffeb2"
+  }
 ]
 response = AmocrmRails::Request.leads.pipelines(pipeline_id).statuses.create(body: body)
 p(response.body)
@@ -412,8 +418,8 @@ status_id = statuses.first[:id]
 ### <a name="leads_pipelines_statuses_edit"></a> [Редактирование статуса воронки](https://www.amocrm.ru/developers/content/crm_platform/leads_pipelines#status-edit)
 ```ruby
 body = {
-        "name": "Новое название для статуса",
-        "color": "#c1e0ff"
+  name: "Новое название для статуса",
+  color: "#c1e0ff"
 }
 response = AmocrmRails::Request.leads.pipelines(pipeline_id).statuses(status_id).update(body: body)
 p(response.body)
@@ -548,5 +554,57 @@ params = [
 ]
 response = AmocrmRails::Request.contacts.chats.retrieve(params: params)
 p(response.body)
+```
+## <a name="companies"></a> [Компании](https://www.amocrm.ru/developers/content/crm_platform/companies-api)
+### <a name="companies_list"></a> [Список компаний](https://www.amocrm.ru/developers/content/crm_platform/companies-api#companies-list)
+```ruby
+params = {
+  with: 'leads',
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.companies.retrieve(params: params)
+p(response.body)
+companies = response.body[:_embedded][:companies]
+company_id = companies.first[:id]
+```
+### <a name="companies_detail"></a> [Получение компании по ID](https://www.amocrm.ru/developers/content/crm_platform/companies-api#company-detail)
+```ruby
+response = AmocrmRails::Request.companies(company_id).retrieve
+p(response.body)
+```
+### <a name="companies_add"></a> [Добавление компаний](https://www.amocrm.ru/developers/content/crm_platform/companies-api#companies-add)
+```ruby
+body = [
+  { 
+    name: "ООО Деппа"
+  }
+]
+response = AmocrmRails::Request.companies.create(body: body)
+p(response.body)
+companies = response.body[:_embedded][:companies]
+company_id = companies.first[:id]
+```
+### <a name="companies_edit"></a> [Редактирование компаний](https://www.amocrm.ru/developers/content/crm_platform/companies-api#companies-edit)
+```ruby
+body = [
+  { 
+    id: company_id,     
+    name: "ООО ДЕППА"
+  }
+]
+response = AmocrmRails::Request.companies.update(body: body)
+p(response.body)
+companies = response.body[:_embedded][:companies]
+company_id = companies.first[:id]
+```
+### <a name="company_edit"></a> [Редактирование компании](https://www.amocrm.ru/developers/content/crm_platform/companies-api#companies-edit)
+```ruby
+body = {
+  name: "ООО ДЕППА"
+}
+response = AmocrmRails::Request.companies(company_id).update(body: body)
+p(response.body)
+company_id = response.body[:id]
 ```
 

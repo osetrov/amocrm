@@ -22,10 +22,10 @@ AmocrmRals::Request.debug = false
 ```
 в файле `config/initializers/amocrm.rb`
 
-### СПИСКИ
+## Списки
 
-#### Добавление, обновление и удаление списков
-##### Добавление
+### Добавление, обновление и удаление списков
+#### Добавление
 ```ruby
 items = [
   {
@@ -38,7 +38,7 @@ body = {
 response = AmocrmRails::Request.catalogs.create(body: body)
 items.map!.with_index { |item, index| item.merge(response.body[:_embedded][:items][index]) }
 ```
-##### Обновление
+#### Обновление
 ```
 items.each do |item| 
   item[:name].insert(-1, ' updated')
@@ -52,17 +52,91 @@ response = AmocrmRails::Request.catalogs.create(body: body)
 item_ids = response.body[:_embedded][:items].map{ |item| item[:id] }
 ```
 
-
-##### Удаление
+#### Удаление
 ```
 🤦🤦🤦
-body = {
-   delete: "{\"delete\": [{#{item_ids.join(',')}}]}"
-}
+body = "{\"delete\": [{#{item_ids.join(',')}]}"
+AmocrmRails::Request.catalogs.create(body: body)
 ```
 
-#### Перечень списков
+### Перечень списков
 ```ruby
 response = AmocrmRails::Request.catalogs.retrieve
+p(response.body)
+item_ids = response.body[:_embedded][:items].map{|item| item[:id]}
+```
+
+## Методы элементов списка
+
+### Добавление, обновление и удаление элементов списка
+
+#### Добавление элементов
+```ruby
+body = {
+   add: [
+      {
+         catalog_id: item_ids.first,
+         name: "Карандаш"
+      }
+   ]
+}
+response = AmocrmRails::Request.catalog_elements.create(body: body)
+p(response.body)
+catalog_element_ids = response.body[:_embedded][:items].map{|item| item[:id]}
+```
+
+#### Обновление элементов
+```ruby
+body = {
+  update: [
+      {
+         catalog_id: item_ids.first,
+         id: catalog_element_ids.first,
+         name: "Ручка"
+      }
+   ]
+}
+response = AmocrmRails::Request.catalog_elements.create(body: body)
+p(response.body)
+```
+
+#### Удаление элементов
+
+```ruby
+body = {
+  delete: [catalog_element_ids.first]
+}
+response = AmocrmRails::Request.catalog_elements.create(body: body)
+p(response.body)
+```
+
+### Перечень элементов списка
+
+```ruby
+params = {
+  catalog_id: item_ids.first
+}
+response = AmocrmRails::Request.catalog_elements.retrieve(params: params)
+p(response.body)
+items = response.body[:_embedded][:items]
+```
+
+## Товары
+
+### Включение функционала
+
+```ruby
+body = {
+  enabled: true
+}
+response = AmocrmRails::Request.products_settings.create(body: body)
+p(response.body)
+catalog_product_id = response.body[:catalog_id]
+```
+
+### Статус активности функционала
+
+```ruby
+response = AmocrmRails::Request.products_settings.retrieve
 p(response.body)
 ```

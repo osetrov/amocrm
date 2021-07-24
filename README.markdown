@@ -96,6 +96,16 @@
     2. [Добавление тегов для конкретного типа сущности](#tags_add)
     3. [Добавление тегов к сущности](#add_tags_to_entity)
     4. [Удаление тегов у сущности](#delete_tags_from_entity)
+13. [События и примечания](#events_and_notes)
+    1. [Список событий](#events_list)
+    2. [Значения для фильтра по значению до/после](#events_filter_params)
+    3. [Типы событий](#events_types)
+    4. [Общая информация о примечаниях](#notes_common_info)
+    5. [Типы примечаний](#notes_types)
+    6. [Список примечаний по типу сущности](#notes_list)
+    7. [Список примечаний по конкретной сущности, по ID сущности](#notes_entity_list)
+    8. [Получение примечания по ID](#note_detail)
+    9. [Добавление примечаний](#notes_add)
 
 ## <a name="install"></a> Установка
 
@@ -1384,4 +1394,279 @@ AmocrmRails::Request.contacts(company_id).update(body: body_item)
 ```ruby
 AmocrmRails::Request.customers.update(body: body)
 AmocrmRails::Request.contacts(customer_id).update(body: body_item)
+```
+## <a name="events_and_notes"></a> [События и примечания](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes)
+### <a name="events_list"></a> [Список событий](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#events-list)
+
+```ruby
+params = {
+  with: 'contact_name',
+  page: 0,
+  limit: 10
+}
+```
+```ruby
+response = AmocrmRails::Request.events.retrieve(params: params)
+events = response.body[:_embedded][:events]
+event_id = events.first[:id]
+```
+### <a name="events_detail"></a> [Получение события по ID](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#events-detail)
+
+```ruby
+params = {
+  with: 'contact_name'
+}
+```
+```ruby
+response = AmocrmRails::Request.events(event_id).retrieve(params: params)
+event = response.body
+```
+### <a name="events_filter_params"></a> [Значения для фильтра по значению до/после](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#events-filter-params)
+
+```ruby
+filter = {
+  filter: {
+    value_after: [
+      customers_statuses: [
+        {
+          status_id: 135751,
+        },
+        {
+          status_id: 135754,
+        }
+      ]
+    ]
+  }
+}
+```
+```ruby
+filter = {
+  filter: {
+    value_after: [
+      value: '155',
+    ],
+    type: 'sale_field_changed',
+    entity: 'lead'
+  }
+}
+```
+### <a name="events_types"></a> [Типы событий](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#events-types)
+
+```ruby
+params = {
+  language_code: 'en'
+}
+```
+```ruby
+response = AmocrmRails::Request.events.types.retrieve(params: params)
+events_types = response.body[:_embedded][:events_types]
+```
+
+### <a name="notes_common_info"></a> [Общая информация о примечаниях](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-common-info)
+### <a name="notes_types"></a> [Типы примечаний](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-types)
+### <a name="notes_list"></a> [Список примечаний по типу сущности](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-list)
+```ruby
+params = {
+  page: 0,
+  limit: 10
+}
+```
+```ruby
+response = AmocrmRails::Request.leads.notes.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.contacts.notes.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.companies.notes.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.customers.notes.retrieve(params: params)
+```
+```ruby
+notes = response.body[:_embedded][:notes]
+note_id = notes.first[:id]
+```
+
+### <a name="notes_entity_list"></a> [Список примечаний по конкретной сущности, по ID сущности](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-entity-list)
+```ruby
+params = {
+  page: 0,
+  limit: 10
+}
+```
+```ruby
+response = AmocrmRails::Request.leads(lead_id).notes.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.contacts(contact_id).notes.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.companies(company_id).notes.retrieve(params: params)
+```
+```ruby
+response = AmocrmRails::Request.customers(customer_id).notes.retrieve(params: params)
+```
+```ruby
+notes = response.body[:_embedded][:notes]
+note_id = notes.first[:id]
+```
+
+### <a name="note_detail"></a> [Получение примечания по ID](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#note-detail)
+```ruby
+response = AmocrmRails::Request.leads(lead_id).notes(note_id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.contacts(contact_id).notes(note_id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.companies(company_id).notes(note_id).retrieve
+```
+```ruby
+response = AmocrmRails::Request.customers(customer_id).notes(note_id).retrieve
+```
+```ruby
+note = response.body
+```
+
+### <a name="notes_add"></a> [Добавление примечаний](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-add)
+
+```ruby
+body = [
+  {
+    "entity_id": 167353,
+    "note_type": "call_in",
+    "params": {
+      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      "duration": 60,
+      "source": "onlinePBX",
+      "link": "https://example.com",
+      "phone": "+79999999999"
+    }
+  },
+  {
+    "entity_id": 167353,
+    "note_type": "call_out",
+    "params": {
+      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      "duration": 60,
+      "source": "onlinePBX",
+      "link": "https://example.com",
+      "phone": "+79999999999"
+    }
+  },
+  {
+    "entity_id": 167353,
+    "note_type": "geolocation",
+    "params": {
+      "text": "Примечание с геолокацией",
+      "address": "ул. Пушкина, дом Колотушкина, квартира Вольнова",
+      "longitude": "53.714816",
+      "latitude": "91.423146"
+    }
+  }
+]
+body_item = {
+  "entity_id": 167353,
+  "note_type": "call_in",
+  "params": {
+    "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+    "duration": 60,
+    "source": "onlinePBX",
+    "link": "https://example.com",
+    "phone": "+79999999999"
+  }
+}
+```
+
+```ruby
+AmocrmRails::Request.leads.notes.create(body: body)
+AmocrmRails::Request.leads(lead_id).notes.create(body: body_item)
+```
+```ruby
+AmocrmRails::Request.contacts.notes.create(body: body)
+AmocrmRails::Request.contacts(contact_id).notes.create(body: body_item)
+```
+```ruby
+AmocrmRails::Request.companies.notes.create(body: body)
+AmocrmRails::Request.companies(company_id).notes.create(body: body_item)
+```
+```ruby
+AmocrmRails::Request.customers.notes.create(body: body)
+AmocrmRails::Request.customers(customer_id).notes.create(body: body_item)
+```
+```ruby
+notes = response.body[:_embedded][:notes]
+note_id = notes.first[:id]
+```
+
+### <a name="notes_edit"></a> [Редактирование примечаний](https://www.amocrm.ru/developers/content/crm_platform/events-and-notes#notes-edit)
+
+```ruby
+body = [
+  {
+    "entity_id": 167353,
+    "note_type": "call_in",
+    "params": {
+      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      "duration": 60,
+      "source": "onlinePBX",
+      "link": "https://example.com",
+      "phone": "+79999999999"
+    }
+  },
+  {
+    "entity_id": 167353,
+    "note_type": "call_out",
+    "params": {
+      "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+      "duration": 60,
+      "source": "onlinePBX",
+      "link": "https://example.com",
+      "phone": "+79999999999"
+    }
+  },
+  {
+    "entity_id": 167353,
+    "note_type": "geolocation",
+    "params": {
+      "text": "Примечание с геолокацией",
+      "address": "ул. Пушкина, дом Колотушкина, квартира Вольнова",
+      "longitude": "53.714816",
+      "latitude": "91.423146"
+    }
+  }
+]
+body_item = {
+  "entity_id": 167353,
+  "note_type": "call_in",
+  "params": {
+    "uniq": "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
+    "duration": 60,
+    "source": "onlinePBX",
+    "link": "https://example.com",
+    "phone": "+79999999999"
+  }
+}
+```
+
+```ruby
+AmocrmRails::Request.leads.notes.update(body: body)
+AmocrmRails::Request.leads(lead_id).notes.update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.contacts.notes.update(body: body)
+AmocrmRails::Request.contacts(contact_id).notes.update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.companies.notes.update(body: body)
+AmocrmRails::Request.companies(company_id).notes.update(body: body_item)
+```
+```ruby
+AmocrmRails::Request.customers.notes.update(body: body)
+AmocrmRails::Request.customers(customer_id).notes.update(body: body_item)
+```
+```ruby
+notes = response.body[:_embedded][:notes]
+note_id = notes.first[:id]
 ```

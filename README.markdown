@@ -168,9 +168,13 @@
 
 и запустите `bundle install`.
 
-Для упрощенной авторизации: `rails g amocrm_rails:install`
+Для упрощенной авторизации: 
 
-Для авторизации через перенаправление пользователя (требуется gem devise): `rails g amocrm_rails:install --with=devise`
+`rails g amocrm_rails:install`
+
+Для авторизации через перенаправление пользователя (требуется gem devise):
+
+`rails g amocrm_rails:install --with=devise`
 
 ### Получение CLIENT_ID, CLIENT_SECRET и CODE
 
@@ -196,9 +200,9 @@
           class: 'btn btn-primary' %>
 ```
 Пример доступен по адресу:
-```
+`
 https://yourdomain/amocrm/link
-```
+`
 
 ![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_link.png)
 

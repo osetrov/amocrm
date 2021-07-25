@@ -1422,21 +1422,21 @@ tag_id = tags.first[:id]
 ### <a name="add_tags_to_entity"></a> [Добавление тегов к сущности](https://www.amocrm.ru/developers/content/crm_platform/tags-api#add-tags-to-entity)
 ```ruby
 body_item = {
-  "_embedded": {
-    "tags": [
+  _embedded: {
+    tags: [
       {
-        "id": tag_id
+        id: tag_id
       }
     ]
   }
 }
 body = [
   {
-    "id": object_id,
-    "_embedded": {
-      "tags": [
+    id: object_id,
+    _embedded: {
+      tags: [
         {
-          "id": tag_id
+          id: tag_id
         }
       ]
     }
@@ -1463,15 +1463,15 @@ AmocrmRails::Request.contacts(customer_id).update(body: body_item)
 
 ```ruby
 body_item = {
-  "_embedded": {
-    "tags": nil
+  _embedded: {
+    tags: nil
   }
 }
 body = [
   {
-    "id": object_id,
-    "_embedded": {
-      "tags": nil
+    id: object_id,
+    _embedded: {
+      tags: nil
     }
   }
 ]

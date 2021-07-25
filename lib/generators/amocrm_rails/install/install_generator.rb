@@ -12,6 +12,7 @@ module AmocrmRails
 
       if with.to_s.downcase == 'devise'
         copy_file 'devise/app/controllers/amocrm_controller.rb', 'app/controllers/amocrm_controller.rb'
+        copy_file 'devise/app/controllers/concerns/amocrm.rb', 'app/controllers/concerns/amocrm.rb'
         copy_file 'devise/app/helpers/amocrm_helper.rb', 'app/helpers/amocrm_helper.rb'
         copy_file 'devise/app/views/amocrm/code.html.erb', 'app/views/amocrm/code.html.erb'
         copy_file 'devise/app/views/amocrm/link.html.erb', 'app/views/amocrm/link.html.erb'
@@ -20,8 +21,9 @@ module AmocrmRails
         route "get '/amocrm' => 'amocrm#code'"
         route "get '/amocrm/link' => 'amocrm#link'"
 
-        inject_into_file 'name_of_file.rb', after: "#The code goes below this line. Don't forget the Line break at the end\n" do <<-'RUBY'
-          puts "Hello World"
+        inject_into_file 'app/controllers/application_controller.rb', after: "class ApplicationController < ActionController::Base\n" do <<-'RUBY'
+          include Amocrm
+          before_action :update_auth_code
         RUBY
         end
       else

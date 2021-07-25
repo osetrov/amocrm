@@ -1949,13 +1949,135 @@ AmocrmRails::Request.customers.segments(segment_id).delete
 
 ## <a name="users"></a> [Пользователи](https://www.amocrm.ru/developers/content/crm_platform/users-api)
 ### <a name="users_list"></a> [Список пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#users-list)
+```ruby
+params = {
+  with: 'group',
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.users.retrieve
+users = response.body[:_embedded][:users]
+user_id = users.first[:id]
+```
 ### <a name="users_detail"></a> [Получение пользователя по ID](https://www.amocrm.ru/developers/content/crm_platform/users-api#user-detail)
+```ruby
+params = {
+  with: 'group'
+}
+response = AmocrmRails::Request.users(user_id).retrieve(params: params)
+user = response.body
+user_id = user[:id]
+```
 ### <a name="users_add"></a> [Добавление пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#users-add)
+```ruby
+body = [
+  {
+    name: "Павел Осетров",
+    email: 'pavel.osetrov@me.com'
+  }
+]
+response = AmocrmRails::Request.users.create(body: body)
+p(response.body)
+users = response.body[:_embedded][:users]
+user_id = users.first[:id]
+```
 ### <a name="roles_list"></a> [Список ролей пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#roles-list)
+```ruby
+params = {
+  with: 'users',
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.roles.retrieve
+roles = response.body[:_embedded][:roles]
+role_id = roles.first[:id]
+```
 ### <a name="roles_detail"></a> [Получение роли по ID](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-detail)
+```ruby
+params = {
+  with: 'users'
+}
+response = AmocrmRails::Request.roles(role_id).retrieve(params: params)
+role = response.body
+role_id = user[:id]
+```
 ### <a name="roles_add"></a> [Добавление ролей](https://www.amocrm.ru/developers/content/crm_platform/users-api#roles-add)
+```ruby
+body = [
+  {
+    name: "role 3",
+    rights: {
+      leads: {
+        add: "A",
+        edit: "G",
+        view: "G",
+        delete: "G",
+        export: "G"
+      },
+      tasks: {
+        edit: "A",
+        delete: "A"
+      },
+      contacts: {
+        add: "A",
+        edit: "A",
+        view: "A",
+        delete: "A",
+        export: "A"
+      },
+      companies: {
+        add: "A",
+        edit: "A",
+        view: "A",
+        delete: "A",
+        export: "A"
+      },
+      mail_access: true,
+      status_rights: [
+        {
+          entity_type: "leads",
+          pipeline_id: 16056,
+          status_id: 20542166,
+          rights: {
+            edit: "A",
+            view: "A",
+            delete: "A",
+            export: "A"
+          }
+        }
+      ],
+      catalog_access: true
+    }
+  }
+]
+response = AmocrmRails::Request.roles.create(body: body)
+p(response.body)
+roles = response.body[:_embedded][:roles]
+role_id = roles.first[:id]
+```
 ### <a name="roles_edit"></a> [Редактирование роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-edit)
+```ruby
+body = {
+  name: "role 3 modified",
+  rights: {
+    contacts: {
+      add: "A",
+      edit: "D",
+      view: "D",
+      delete: "D",
+      export: "D"
+    },
+    status_rights: nil
+  }
+}
+response = AmocrmRails::Request.roles(role_id).update(body: body)
+role = response.body
+```
+
 ### <a name="roles_delete"></a> [Удаление роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-delete)
+```ruby
+AmocrmRails::Request.roles(role_id).delete
+```
 ### <a name="users_common_rights"></a> [Общие обозначения прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#common-rights)
 ### <a name="users_rights_dependence"></a> [Зависимости прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#rights-dependence)
 

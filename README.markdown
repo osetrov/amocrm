@@ -206,7 +206,7 @@ https://yourdomain/amocrm/link
 
 ![alt Авторизация в amo](https://storage.deppa.ru/uploads/amo_form.png)
 
-После вы будуте перенаправлены на страницу https://yourdomain.com/amocrm/code
+После вы будуте перенаправлены на страницу https://yourdomain.com/amocrm
 
 ![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_code.png)
 

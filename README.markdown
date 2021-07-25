@@ -168,7 +168,16 @@
 
 Затем: `rails g amocrm_rails:install`
 
-В файл `config/amocrm.yml` вставьте ваши данные.
+### Получение CLIENT_ID, CLIENT_SECRET и CODE:
+
+1. Переходим на страницу [интеграций](https://deppa.amocrm.ru/settings/widgets/) и нажимаем "+ СОЗДАТЬ ИНТЕГРАЦИЮ"
+![alt Страница виджетов](https://storage.deppa.ru/uploads/widgets.png)
+2. Заполняем поля и нажимаем "Сохранить"
+![alt Создание интеграции](https://storage.deppa.ru/uploads/widget_add.png)
+3. Переходим на таб "Ключи и доступы". Код авторизации работает 20 минут.
+![alt Создание интеграции](https://storage.deppa.ru/uploads/widget_keys.png)
+
+В файл `config/amocrm.yml` вставляем данные.
 
 Вы можете изменять `timeout`, `open_timeout`, `faraday_adapter`, `proxy`, `symbolize_keys`, `logger`, и `debug`:
 

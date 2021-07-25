@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'amocrm-rails'
-  s.version     = '0.0.5'
+  s.version     = '0.0.6'
   s.date        = '2021-07-24'
   s.summary     = "Rails wrapper API AmoCrm"
   s.description = ""

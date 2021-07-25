@@ -333,7 +333,7 @@ body = [
       uniq: "a1fe231cc88e64ba2e8822ba2b3ewrw",
       duration: 54,
       service_code: "CkAvbEwPam6sad",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: 79998888888,
       called_at: 1510261200,
       from: "onlinePBX"
@@ -394,7 +394,7 @@ body = [
       form_id: "a1fee7c0fc436088e64ba2e8822ba2b3ewrw",
       form_sent_at: 1590830520,
       form_name: "Форма заявки для полёта в космос",
-      form_page: "https://example.com",
+      form_page: "https://deppa.ru",
       referer: "https://www.google.com/search?&q=elon+musk"
     }
   }
@@ -1600,7 +1600,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1611,7 +1611,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1633,7 +1633,7 @@ body_item = {
     uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
     duration: 60,
     source: "onlinePBX",
-    link: "https://example.com",
+    link: "https://deppa.ru",
     phone: "+79999999999"
   }
 }
@@ -1671,7 +1671,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1682,7 +1682,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1704,7 +1704,7 @@ body_item = {
     uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
     duration: 60,
     source: "onlinePBX",
-    link: "https://example.com",
+    link: "https://deppa.ru",
     phone: "+79999999999"
   }
 }
@@ -2206,7 +2206,7 @@ body = [
     duration: 10,
     source: "example_integration",
     phone: "123123",
-    link: "https://example.com/audio.mp3",
+    link: "https://deppa.ru/audio.mp3",
     direction: "inbound",
     call_result: "Успешный разговор",
     call_status: 4

@@ -190,7 +190,7 @@
 Выполняем все шаги как при [упрощенной авторизации](#easy_auth)
 
 Ссылка на получение кода:
-```ruby
+```rhtml
 <%= link_to "Установить интеграцию",
           amocrm_oauth_url(state: current_user.try(:id)),
           class: 'btn btn-primary' %>

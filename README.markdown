@@ -172,7 +172,7 @@
 
 `rails g amocrm_rails:install`
 
-Для авторизации через перенаправление пользователя (требуется gem devise):
+Для авторизации через перенаправление пользователя (требуется [gem devise](https://github.com/heartcombo/devise)):
 
 `rails g amocrm_rails:install --with=devise`
 
@@ -189,7 +189,7 @@
 
 В файл `config/amocrm.yml` вставляем данные.
 
-#### <a name="devise_auth"></a> Авторизация через перенаправления пользователя (требуется gem Devise)
+#### <a name="devise_auth"></a> Авторизация через перенаправления пользователя (требуется [gem Devise](https://github.com/heartcombo/devise))
 
 Выполняем все шаги как при [упрощенной авторизации](#easy_auth)
 

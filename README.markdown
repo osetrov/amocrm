@@ -170,7 +170,7 @@
 
 ### Получение CLIENT_ID, CLIENT_SECRET и CODE:
 
-1. Переходим на страницу [интеграций](https://deppa.amocrm.ru/settings/widgets/) и нажимаем "+ СОЗДАТЬ ИНТЕГРАЦИЮ"
+1. Переходим на страницу интеграций https://yourdomain.amocrm.ru/settings/widgets/ и нажимаем "+ СОЗДАТЬ ИНТЕГРАЦИЮ"
 ![alt Страница виджетов](https://storage.deppa.ru/uploads/widgets.png)
 2. Заполняем поля и нажимаем "Сохранить"
 ![alt Создание интеграции](https://storage.deppa.ru/uploads/widget_add.png)

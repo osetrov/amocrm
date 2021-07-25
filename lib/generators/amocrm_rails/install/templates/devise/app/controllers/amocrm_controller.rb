@@ -19,4 +19,8 @@ class AmocrmController < ApplicationController
     end
     @code = params[:code]
   end
+
+  def webhook
+
+  end
 end

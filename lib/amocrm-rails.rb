@@ -2,6 +2,8 @@ require 'amocrm-rails/amocrm_error'
 require 'amocrm-rails/request'
 require 'amocrm-rails/api_request'
 require 'amocrm-rails/response'
+require 'concern'
+require 'helper'
 
 module AmocrmRails
   class << self

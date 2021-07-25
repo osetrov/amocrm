@@ -307,7 +307,7 @@ p(response.body)
 ```ruby
 body = [
   {
-    source_name: "ОАО Коспромсервис",
+    source_name: "ООО Деппа",
     source_uid: "a1fee7c0fc436088e64ba2e8822ba2b3",
     created_at: 1510261200,
     _embedded: {
@@ -324,7 +324,7 @@ body = [
       ],
       companies: [
         {
-          name: "ОАО Коспромсервис"
+          name: "ООО Деппа"
         }
       ]
     },
@@ -348,7 +348,7 @@ p(response.body)
 ```ruby
 body = [
   {
-    source_name: "ОАО Коспромсервис",
+    source_name: "ООО Деппа",
     source_uid: "a1fee7c0fc436088e64ba2e8822ba2b3",
     created_at: 1590830520,
     _embedded: {
@@ -385,7 +385,7 @@ body = [
       ],
       companies: [
         {
-          name: "ОАО Коспромсервис"
+          name: "ООО Деппа"
         }
       ]
     },
@@ -570,7 +570,7 @@ contacts = response.body[:_embedded][:contacts]
 ```ruby
 params = {
   filter: { 
-    name: "ОАО Коспромсервис"
+    name: "ООО Деппа"
   }
 }
 response = AmocrmRails::Request.companies.retrieve(params: params)

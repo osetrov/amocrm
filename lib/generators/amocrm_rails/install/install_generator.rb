@@ -22,7 +22,7 @@ module AmocrmRails
         route "get '/amocrm/link' => 'amocrm#link'"
 
         inject_into_file 'app/controllers/application_controller.rb', after: "class ApplicationController < ActionController::Base\n" do <<-'RUBY'
-          include Amocrm
+          include AmocrmRails::Concern
           before_action :update_auth_code
         RUBY
         end

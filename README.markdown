@@ -2111,13 +2111,126 @@ AmocrmRails::Request.webhooks(webhook_id).delete
 
 ## <a name="widgets"></a> [Виджеты](https://www.amocrm.ru/developers/content/crm_platform/widgets-api)
 ### <a name="widgets_list"></a> [Список виджетов](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widgets-list)
+```ruby
+params = {
+  page: 0,
+  limit: 10
+}
+response = AmocrmRails::Request.widgets.retrieve
+widgets = response.body[:_embedded][:widgets]
+widget_code = widgets.first[:code]
+```
 ### <a name="widgets_detail"></a> [Информация о виджете по его коду](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-detail)
+```ruby
+response = AmocrmRails::Request.widgets(widget_code).retrieve
+widget = response.body
+```
 ### <a name="widgets_install"></a> [Установка виджета в аккаунт](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-install)
+```ruby
+body = {
+  login: "example",
+  password: "eXaMp1E",
+  script_path: "https://deppa.ru/"
+}
+response = AmocrmRails::Request.widgets.create(body: body)
+p(response.body)
+widget = response.body
+```
 ### <a name="widgets_uninstall"></a> [Удаление установки виджета](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-uninstall)
+```ruby
+AmocrmRails::Request.widgets(widget_code).delete
+```
 ### <a name="widgets_continue"></a> [Подтверждение выполнения блока виджета в Salesbot](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-continue)
-
+```ruby
+body = {
+  data: {
+    status: "success"
+  },
+  execute_handlers: [
+    {
+      handler: "show",
+      params: {
+        type: "text",
+        value: "Здесь текст"
+      }
+    },
+    {
+      handler: "show",
+      params: {
+        type: "buttons",
+        value: "Нажми на кнопку",
+        buttons: [
+          "1ая кнопка",
+          "2ая кнопка",
+          "3ая кнопка",
+          "4ая кнопка"
+        ]
+      }
+    },
+    {
+      handler: "show",
+      params: {
+        type: "buttons_url",
+        value: "Кнопки со ссылками",
+        buttons: [
+          "https://amocrm.ru",
+          "https://deppa.ru"
+        ]
+      }
+    },
+    {
+      handler: "goto",
+      params: {
+        type: "question|answer|finish",
+        step: 5
+      }
+    }
+  ]
+}
+AmocrmRails::Request.salesbot(bot_id).continue(continue_id).create(body: body)
+AmocrmRails::Request.marketingbot(bot_id).continue(continue_id).create(body: body)
+```
 ## <a name="calls"></a> [Добавление звонков](https://www.amocrm.ru/developers/content/crm_platform/calls-api)
-
+```ruby
+body = [
+  {
+    duration: 10,
+    source: "example_integration",
+    phone: "123123",
+    link: "https://example.com/audio.mp3",
+    direction: "inbound",
+    call_result: "Успешный разговор",
+    call_status: 4
+  }
+]
+response = AmocrmRails::Request.calls.create(body: body)
+p(response.body)
+calls = response.body[:_embedded][:calls]
+```
 ## <a name="salesbot"></a> [Salebot](https://www.amocrm.ru/developers/content/api/salesbot-api)
-
+```ruby
+body = [
+  {
+    bot_id: 565,
+    entity_id: 76687686,
+    entity_type: 1
+  }
+]
+response = AmocrmRails::Request.salesbot.run.create(body: body)
+p(response.body)
+```
 ## <a name="short_links"></a> [Короткие ссылки](https://www.amocrm.ru/developers/content/crm_platform/short_links)
+```ruby
+body = [
+  {
+    url:"https://deppa.ru",
+    metadata:{
+      entity_type:"contacts",
+      entity_id:11070881
+    }
+  }
+]
+response = AmocrmRails::Request.short_links.create(body: body)
+p(response.body)
+short_links = response.body[:_embedded][:short_links]
+```

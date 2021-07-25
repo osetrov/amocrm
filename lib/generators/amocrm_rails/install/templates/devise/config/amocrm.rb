@@ -8,13 +8,6 @@ AmocrmRails.setup do |config|
       config::register k.underscore.to_sym, v
     end
 
-    if File.exist?('config/amocrm_token.yml')
-      token_data = YAML.load_file("config/amocrm_token.yml")
-      token_data.each do |k, v|
-        config::register k.underscore.to_sym, v
-      end
-    end
-
     config::Request.timeout = 60
     config::Request.open_timeout = 60
     config::Request.symbolize_keys = true

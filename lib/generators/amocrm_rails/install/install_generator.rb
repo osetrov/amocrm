@@ -12,8 +12,6 @@ module AmocrmRails
 
       if with.to_s.downcase == 'devise'
         copy_file 'devise/app/controllers/amocrm_controller.rb', 'app/controllers/amocrm_controller.rb'
-        copy_file 'devise/app/controllers/concerns/amocrm.rb', 'app/controllers/concerns/amocrm.rb'
-        copy_file 'devise/app/helpers/amocrm_helper.rb', 'app/helpers/amocrm_helper.rb'
         copy_file 'devise/app/views/amocrm/code.html.erb', 'app/views/amocrm/code.html.erb'
         copy_file 'devise/app/views/amocrm/link.html.erb', 'app/views/amocrm/link.html.erb'
         copy_file 'devise/config/amocrm.yml', 'config/amocrm.yml'

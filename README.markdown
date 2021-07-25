@@ -2,6 +2,8 @@
 
 ## Оглавление
 0. [Установка](#install)
+   1. [Упрощенная авторизация](#easy_auth)
+   2. [Авторизация через перенаправления пользователя (требуется gem Devise)](#devise_auth)
 1. [Параметры аккаунта](#account)
 2. [Сделки](#leads)
     1. [Список сделок](#leads_retrieve)
@@ -166,9 +168,13 @@
 
 и запустите `bundle install`.
 
-Затем: `rails g amocrm_rails:install`
+Для упрощенной авторизации: `rails g amocrm_rails:install`
+
+Для авторизации через перенаправление пользователя (требуется gem devise): `rails g amocrm_rails:install --with=devise`
 
 ### Получение CLIENT_ID, CLIENT_SECRET и CODE
+
+#### <a name="easy_auth"></a> Упрощенная авторизация
 
 1. Переходим на страницу интеграций https://yourdomain.amocrm.ru/settings/widgets/ и нажимаем "+ СОЗДАТЬ ИНТЕГРАЦИЮ"
 ![alt Страница виджетов](https://storage.deppa.ru/uploads/widgets.png)
@@ -178,6 +184,33 @@
 ![alt Создание интеграции](https://storage.deppa.ru/uploads/widget_keys.png)
 
 В файл `config/amocrm.yml` вставляем данные.
+
+#### <a name="devise_auth"></a> Авторизация через перенаправления пользователя (требуется gem Devise)
+
+Выполняем все шаги как при [упрощенной авторизации](#easy_auth)
+
+Ссылка на получение кода:
+```ruby
+<%= link_to "Установить интеграцию",
+          amocrm_oauth_url(state: current_user.try(:id)),
+          class: 'btn btn-primary' %>
+```
+Пример доступен по адресу:
+```
+https://yourdomain/amocrm/link
+```
+
+![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_link.png)
+
+Нажимаем на кнопку, логинимся в амо и даём права приложению
+
+![alt Авторизация в amo](https://storage.deppa.ru/uploads/amo_form.png)
+
+После вы будуте перенаправлены на страницу https://yourdomain.com/amocrm/code
+
+![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_code.png)
+
+Если вы увидили код - всё в порядке, копировать код нет необходимости, страницу можно закрыть.
 
 Вы можете изменять `timeout`, `open_timeout`, `faraday_adapter`, `proxy`, `symbolize_keys`, `logger`, и `debug`:
 

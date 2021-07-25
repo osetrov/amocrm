@@ -36,8 +36,12 @@ module AmocrmRails
         response_token = JSON.parse(response.body)
         data = YAML.load_file("config/amocrm_token.yml")
         response_token.each do |k, v|
-          data[user_id] = {} if data[user_id].nil?
-          data[user_id][k] = v
+          if user_id.present?
+            data[user_id] = {} if data[user_id].nil?
+            data[user_id][k] = v
+          else
+            data[k] = v
+          end
           AmocrmRails::register k.underscore.to_sym, v
         end
         File.open("config/amocrm_token.yml", 'w') { |f| YAML.dump(data, f) }

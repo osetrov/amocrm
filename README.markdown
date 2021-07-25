@@ -142,12 +142,21 @@
     8. [Удаление роли](#roles_delete)
     9. [Общие обозначения прав пользователей](#users_common_rights)   
     10. [Зависимости прав пользователей](#users_rights_dependence)
-
-
-
-
-
-
+17. [Товары](#products)
+18. [Вебхуки](#webhooks)
+    1. [Список установленных вебхуков в аккаунте](#webhooks_list)
+    2. [Подписка на вебхук](#webhooks_subscribe)
+    3. [Отписка от событий](#webhooks_delete)
+    4. [Возможные событий](#webhooks_available_actions)
+19. [Виджеты](#widgets)
+    1. [Список виджетов](#widgets_list)
+    2. [Информация о виджете по его коду](#widgets_detail)
+    3. [Установка виджета в аккаунт](#widgets_install)
+    4. [Удаление установки виджета](#widgets_uninstall)    
+    5. [Подтверждение выполнения блока виджета в Salesbot](#widgets_continue)   
+20. [Добавление звонков](#calls)
+21. [Salebot](#salesbot)
+22. [Короткие ссылки](#short_links)
 
 ## <a name="install"></a> Установка
 
@@ -1865,6 +1874,11 @@ statuses = response.body[:_embedded][:statuses]
 status_id = statuses.first[:id]
 ```
 ### <a name="customers_statuses_detail"></a> [Получение статуса покупателей по ID](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customer-status-detail)
+```ruby
+response = AmocrmRails::Request.customers.statuses(status_id).retrieve
+statuses = response.body[:_embedded][:statuses]
+status_id = statuses.first[:id]
+```
 ### <a name="customers_statuses_add"></a> [Добавление статусов в воронку](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-statuses-add)
 ### <a name="customers_statuses_edit"></a> [Редактирование статуса покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-status-edit)
 ### <a name="customer_status_delete"></a> [Удаление статуса покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customer-status-delete)
@@ -1883,7 +1897,27 @@ status_id = statuses.first[:id]
 ### <a name="roles_list"></a> [Список ролей пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#roles-list)
 ### <a name="roles_detail"></a> [Получение роли по ID](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-detail)
 ### <a name="roles_add"></a> [Добавление ролей](https://www.amocrm.ru/developers/content/crm_platform/users-api#roles-add)
-### <a name="roles_edit></a> [Редактирование роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-edit)
-### <a name="roles_delete></a> [Удаление роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-delete)
-### <a name="users_common_rights></a> [Общие обозначения прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#common-rights)
-### <a name="users_rights_dependence></a> [Зависимости прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#rights-dependence)
+### <a name="roles_edit"></a> [Редактирование роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-edit)
+### <a name="roles_delete"></a> [Удаление роли](https://www.amocrm.ru/developers/content/crm_platform/users-api#role-delete)
+### <a name="users_common_rights"></a> [Общие обозначения прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#common-rights)
+### <a name="users_rights_dependence"></a> [Зависимости прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#rights-dependence)
+
+## <a name="products"></a> [Товары](https://www.amocrm.ru/developers/content/crm_platform/products-api)
+## <a name="webhooks"></a> [Вебхуки](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api)
+### <a name="webhooks_list"></a> [Список установленных вебхуков в аккаунте](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhooks-list)
+### <a name="webhooks_subscribe"></a> [Подписка на вебхук](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhook-subscribe)
+### <a name="webhooks_delete"></a> [Отписка от событий](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhooks-delete)
+### <a name="webhooks_available_actions"></a> [Возможные событий](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhooks-available-actions)
+
+## <a name="widgets"></a> [Виджеты](https://www.amocrm.ru/developers/content/crm_platform/widgets-api)
+### <a name="widgets_list"></a> [Список виджетов](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widgets-list)
+### <a name="widgets_detail"></a> [Информация о виджете по его коду](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-detail)
+### <a name="widgets_install"></a> [Установка виджета в аккаунт](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-install)
+### <a name="widgets_uninstall"></a> [Удаление установки виджета](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-uninstall)
+### <a name="widgets_continue"></a> [Подтверждение выполнения блока виджета в Salesbot](https://www.amocrm.ru/developers/content/crm_platform/widgets-api#widget-continue)
+
+## <a name="calls"></a> [Добавление звонков](https://www.amocrm.ru/developers/content/crm_platform/calls-api)
+
+## <a name="salesbot"></a> [Salebot](https://www.amocrm.ru/developers/content/api/salesbot-api)
+
+## <a name="short_links"></a> [Короткие ссылки](https://www.amocrm.ru/developers/content/crm_platform/short_links)

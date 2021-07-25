@@ -6,19 +6,27 @@ require 'amocrm-rails/response'
 module AmocrmRails
   class << self
     def generate_access_token(client_id=AmocrmRails.client_id, client_secret=AmocrmRails.client_secret, refresh_token=nil, count=0)
+      refresh_token ||= AmocrmRails.try(:refresh_token)
       params = {
         client_id: client_id,
         client_secret: client_secret,
-        grant_type: 'authorization_code',
-        redirect_uri: AmocrmRails.redirect_uri
       }
       if refresh_token.present?
+        params[:grant_type] = 'refresh_token'
         params[:refresh_token] = refresh_token
       else
+        params[:grant_type] = 'authorization_code'
         params[:code] = AmocrmRails.code
       end
+      params[:redirect_uri] = AmocrmRails.redirect_uri
       response = Faraday.post(AmocrmRails.url_token, params.to_json, "Content-Type" => "application/json")
-      if response.status < 200 || response.status > 204
+      if AmocrmRails::Request.debug
+        logger = AmocrmRails::Request.logger || ::Logger.new(STDOUT)
+        logger.info "---generate_access_token---"
+        logger.info "params: #{params}"
+        logger.info "Responding with #{response.status.inspect} => #{response.body.inspect}"
+      end
+      if response.status >= 200 && response.status <= 204
         response_token = JSON.parse(response.body)
         data = YAML.load_file("config/amocrm_token.yml")
         response_token.each do |k, v|
@@ -26,7 +34,7 @@ module AmocrmRails
           AmocrmRails::register k.underscore.to_sym, v
         end
         File.open("config/amocrm_token.yml", 'w') { |f| YAML.dump(data, f) }
-      elsif count < 3
+      elsif count < 3 && AmocrmRails.refresh_token.present?
         AmocrmRails.generate_access_token(client_id, client_secret, AmocrmRails.refresh_token, count+1)
       end
     end

@@ -1,12 +1,11 @@
 class AmocrmController < ApplicationController
+  before_action :authenticate_user!, except: [:webhook]
+
   def link
-    unless user_signed_in?
-      redirect_to new_user_session_path
-    end
   end
 
   def code
-    if user_signed_in? && current_user.id == params[:state].to_i
+    if current_user.id == params[:state].to_i
       if File.exist?('config/amocrm.yml')
         data = YAML.load_file('config/amocrm.yml')
         data[Rails.env][current_user.id] = {} if data[Rails.env][current_user.id].nil?
@@ -21,6 +20,13 @@ class AmocrmController < ApplicationController
   end
 
   def webhook
+  end
 
+  private
+
+  def authenticate_user!
+    unless user_signed_in?
+      redirect_to new_user_session_path
+    end
   end
 end

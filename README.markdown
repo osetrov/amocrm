@@ -1858,7 +1858,6 @@ response = AmocrmRails::Request.customers.transactions(transaction_id).delete
 p(response.body)
 ```
 ### <a name="customer_bonus_points_update"></a> [Списание/начисление бонусных баллов покупателю](https://www.amocrm.ru/developers/content/crm_platform/customers-api#customer–bonus-points-update)
-
 ```ruby
 body = {
   earn: 500
@@ -1876,17 +1875,75 @@ status_id = statuses.first[:id]
 ### <a name="customers_statuses_detail"></a> [Получение статуса покупателей по ID](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customer-status-detail)
 ```ruby
 response = AmocrmRails::Request.customers.statuses(status_id).retrieve
+status = response.body
+```
+### <a name="customers_statuses_add"></a> [Добавление статусов в воронку](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-statuses-add)
+```ruby
+body = [
+  {
+    name: "Новый статус",
+    sort: 100,
+    color: "#fffeb2"
+  },
+  {
+    name: "Новый статус 2",
+    sort: 200,
+    color: "#fffeb2"
+  }
+]
+response = AmocrmRails::Request.customers.statuses.create(body: body)
+p(response.body)
 statuses = response.body[:_embedded][:statuses]
 status_id = statuses.first[:id]
 ```
-### <a name="customers_statuses_add"></a> [Добавление статусов в воронку](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-statuses-add)
 ### <a name="customers_statuses_edit"></a> [Редактирование статуса покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-status-edit)
+```ruby
+body = {
+  name: "Новое название для статуса",
+  color: "#c1e0ff"
+}
+response = AmocrmRails::Request.customers.statuses(status_id).update(body: body)
+customer = response.body
+```
 ### <a name="customer_status_delete"></a> [Удаление статуса покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customer-status-delete)
+```ruby
+AmocrmRails::Request.customers.statuses(status_id).delete
+```
 ### <a name="segments_list"></a> [Список сегментов покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segments-list)
+```ruby
+response = AmocrmRails::Request.customers.segments
+segments = response.body[:_embedded][:segments]
+segment_id = segments.first[:id]
+```
 ### <a name="segments_detail"></a> [Получение сегмента покупателей по ID](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-detail)
+```ruby
+response = AmocrmRails::Request.customers.segments(segment_id).retrieve
+segment = response.body
+```
 ### <a name="segments_add"></a> [Добавление сегмента покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-add)
+```ruby
+body = {
+  name: "Сегмент для примера",
+  color: "ae003f"
+}
+response = AmocrmRails::Request.customers.segments.create(body: body)
+p(response.body)
+segment = response.body
+segment_id = segment[:id]
+```
 ### <a name="segments_edit"></a> [Редактирование сегмента покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-edit)
+```ruby
+body = {
+  name: "Новое имя для сегмента",
+  color: "ae003f"
+}
+response = AmocrmRails::Request.customers.segments(segment_id).update(body: body)
+segment = response.body
+```
 ### <a name="segment_delete"></a> [Удаление сегмента покупателей](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segment-delete)
+```ruby
+AmocrmRails::Request.customers.segments(segment_id).delete
+```
 ### <a name="customers_statuses_colors"></a> [Доступные цвета статусов](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#customers-statuses-colors)
 ### <a name="customers_statuses_colors"></a> [Доступные цвета сегментов](https://www.amocrm.ru/developers/content/crm_platform/customers-statuses-api#segments-colors)
 

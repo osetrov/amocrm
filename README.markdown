@@ -2084,8 +2084,29 @@ AmocrmRails::Request.roles(role_id).delete
 ## <a name="products"></a> [Товары](https://www.amocrm.ru/developers/content/crm_platform/products-api)
 ## <a name="webhooks"></a> [Вебхуки](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api)
 ### <a name="webhooks_list"></a> [Список установленных вебхуков в аккаунте](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhooks-list)
+```ruby
+response = AmocrmRails::Request.webhooks.retrieve
+webhooks = response.body[:_embedded][:webhooks]
+webhook_id = webhooks.first[:id]
+```
 ### <a name="webhooks_subscribe"></a> [Подписка на вебхук](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhook-subscribe)
+```ruby
+body = {
+  destination: "https://deppa.ru",
+  settings: [
+    "add_lead"
+  ],
+  sort: 10
+}
+response = AmocrmRails::Request.webhooks.create(body: body)
+p(response.body)
+webhook = response.body
+webhook_id = webhook[:id]
+```
 ### <a name="webhooks_delete"></a> [Отписка от событий](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhooks-delete)
+```ruby
+AmocrmRails::Request.webhooks(webhook_id).delete
+```
 ### <a name="webhooks_available_actions"></a> [Возможные событий](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhooks-available-actions)
 
 ## <a name="widgets"></a> [Виджеты](https://www.amocrm.ru/developers/content/crm_platform/widgets-api)

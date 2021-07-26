@@ -14,10 +14,10 @@ module AmocrmRails
         end
         parse_response(response)
       rescue => e
-        if e.response.try(:code) == 401 && first_time
+        if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
           self.post(params: params, headers: headers, body: body, first_time: false)
-        elsif e.response.try(:code) == 429
+        elsif e.response.dig(:status) == 429
           sleep(1.second)
           self.post(params: params, headers: headers, body: body, first_time: false)
         else
@@ -35,10 +35,10 @@ module AmocrmRails
         end
         parse_response(response)
       rescue => e
-        if e.response.try(:code) == 401 && first_time
+        if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
           self.patch(params: params, headers: headers, body: body, first_time: false)
-        elsif e.response.try(:code) == 429
+        elsif e.response.try(:status) == 429
           sleep(1.second)
           self.patch(params: params, headers: headers, body: body, first_time: false)
         else
@@ -56,10 +56,10 @@ module AmocrmRails
         end
         parse_response(response)
       rescue => e
-        if e.response.try(:code) == 401 && first_time
+        if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
           self.put(params: params, headers: headers, body: body, first_time: false)
-        elsif e.response.try(:code) == 429
+        elsif e.response.dig(:status) == 429
           sleep(1.second)
           self.put(params: params, headers: headers, body: body, first_time: false)
         else
@@ -77,10 +77,10 @@ module AmocrmRails
         end
         parse_response(response)
       rescue => e
-        if e.response.try(:code) == 401 && first_time
+        if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
           self.get(params: params, headers: headers, first_time: false)
-        elsif e.response.try(:code) == 429
+        elsif e.response.try(:status) == 429
           sleep(1.second)
           self.get(params: params, headers: headers, body: body, first_time: false)
         else
@@ -98,10 +98,10 @@ module AmocrmRails
         end
         parse_response(response)
       rescue => e
-        if e.response.try(:code) == 401 && first_time
+        if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
           self.delete(params: params, headers: headers, first_time: false)
-        elsif e.response.try(:code) == 429
+        elsif e.response.try(:stattus) == 429
           sleep(1.second)
           self.delete(params: params, headers: headers, body: body, first_time: false)
         else

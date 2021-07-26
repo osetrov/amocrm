@@ -2,6 +2,8 @@
 
 ## Оглавление
 0. [Установка](#install)
+   1. [Упрощенная авторизация](#easy_auth)
+   2. [Авторизация через перенаправления пользователя (требуется gem Devise)](#devise_auth)
 1. [Параметры аккаунта](#account)
 2. [Сделки](#leads)
     1. [Список сделок](#leads_retrieve)
@@ -166,18 +168,57 @@
 
 и запустите `bundle install`.
 
-Затем: `rails g amocrm_rails:install`
+Для упрощенной авторизации: 
 
-### Получение CLIENT_ID, CLIENT_SECRET и CODE:
+`rails g amocrm_rails:install`
+
+Для авторизации через перенаправление пользователя (требуется [gem devise](https://github.com/heartcombo/devise)):
+
+`rails g amocrm_rails:install --with=devise`
+
+### Получение CLIENT_ID, CLIENT_SECRET и CODE
+
+#### <a name="easy_auth"></a> Упрощенная авторизация
 
 1. Переходим на страницу интеграций https://yourdomain.amocrm.ru/settings/widgets/ и нажимаем "+ СОЗДАТЬ ИНТЕГРАЦИЮ"
 ![alt Страница виджетов](https://storage.deppa.ru/uploads/widgets.png)
-2. Заполняем поля и нажимаем "Сохранить"
+2. Заполняем поля, в первое поле вводим https://yourdomain.com/amocrm и нажимаем "Сохранить"
 ![alt Создание интеграции](https://storage.deppa.ru/uploads/widget_add.png)
 3. Переходим на таб "Ключи и доступы". Код авторизации работает 20 минут.
 ![alt Создание интеграции](https://storage.deppa.ru/uploads/widget_keys.png)
 
 В файл `config/amocrm.yml` вставляем данные.
+
+#### <a name="devise_auth"></a> Авторизация через перенаправления пользователя (требуется [gem Devise](https://github.com/heartcombo/devise))
+
+Выполняем все шаги как при [упрощенной авторизации](#easy_auth)
+
+Ссылка на получение кода:
+```rhtml
+<%= link_to "Установить интеграцию",
+          amocrm_oauth_url(state: current_user.try(:id)),
+          class: 'btn btn-primary' %>
+```
+Пример доступен по адресу:
+`
+https://yourdomain/amocrm/link
+`
+
+![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_link.png)
+
+Нажимаем на кнопку, логинимся в амо и даём права приложению
+
+![alt Авторизация в amo](https://storage.deppa.ru/uploads/amo_form.png)
+
+После вы будуте перенаправлены на страницу https://yourdomain.com/amocrm
+
+![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_code.png)
+
+Если вы увидили код - всё в порядке, копировать код нет необходимости, страницу можно закрыть.
+
+Если вы не используете [gem Devise](https://github.com/heartcombo/devise), то вам необходимо реализовать в
+application_controller.rb методы `current_user` для получения текущего пользователя, `user_signed_in?` для проверки
+авторизован ли посетитель на вашем сайте и `new_user_session_path` для получения пути к странице авторизции.
 
 Вы можете изменять `timeout`, `open_timeout`, `faraday_adapter`, `proxy`, `symbolize_keys`, `logger`, и `debug`:
 
@@ -307,7 +348,7 @@ p(response.body)
 ```ruby
 body = [
   {
-    source_name: "ОАО Коспромсервис",
+    source_name: "ООО Деппа",
     source_uid: "a1fee7c0fc436088e64ba2e8822ba2b3",
     created_at: 1510261200,
     _embedded: {
@@ -324,7 +365,7 @@ body = [
       ],
       companies: [
         {
-          name: "ОАО Коспромсервис"
+          name: "ООО Деппа"
         }
       ]
     },
@@ -333,7 +374,7 @@ body = [
       uniq: "a1fe231cc88e64ba2e8822ba2b3ewrw",
       duration: 54,
       service_code: "CkAvbEwPam6sad",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: 79998888888,
       called_at: 1510261200,
       from: "onlinePBX"
@@ -348,7 +389,7 @@ p(response.body)
 ```ruby
 body = [
   {
-    source_name: "ОАО Коспромсервис",
+    source_name: "ООО Деппа",
     source_uid: "a1fee7c0fc436088e64ba2e8822ba2b3",
     created_at: 1590830520,
     _embedded: {
@@ -385,7 +426,7 @@ body = [
       ],
       companies: [
         {
-          name: "ОАО Коспромсервис"
+          name: "ООО Деппа"
         }
       ]
     },
@@ -394,7 +435,7 @@ body = [
       form_id: "a1fee7c0fc436088e64ba2e8822ba2b3ewrw",
       form_sent_at: 1590830520,
       form_name: "Форма заявки для полёта в космос",
-      form_page: "https://example.com",
+      form_page: "https://deppa.ru",
       referer: "https://www.google.com/search?&q=elon+musk"
     }
   }
@@ -570,7 +611,7 @@ contacts = response.body[:_embedded][:contacts]
 ```ruby
 params = {
   filter: { 
-    name: "ОАО Коспромсервис"
+    name: "ООО Деппа"
   }
 }
 response = AmocrmRails::Request.companies.retrieve(params: params)
@@ -1385,21 +1426,21 @@ tag_id = tags.first[:id]
 ### <a name="add_tags_to_entity"></a> [Добавление тегов к сущности](https://www.amocrm.ru/developers/content/crm_platform/tags-api#add-tags-to-entity)
 ```ruby
 body_item = {
-  "_embedded": {
-    "tags": [
+  _embedded: {
+    tags: [
       {
-        "id": tag_id
+        id: tag_id
       }
     ]
   }
 }
 body = [
   {
-    "id": object_id,
-    "_embedded": {
-      "tags": [
+    id: object_id,
+    _embedded: {
+      tags: [
         {
-          "id": tag_id
+          id: tag_id
         }
       ]
     }
@@ -1426,15 +1467,15 @@ AmocrmRails::Request.contacts(customer_id).update(body: body_item)
 
 ```ruby
 body_item = {
-  "_embedded": {
-    "tags": nil
+  _embedded: {
+    tags: nil
   }
 }
 body = [
   {
-    "id": object_id,
-    "_embedded": {
-      "tags": nil
+    id: object_id,
+    _embedded: {
+      tags: nil
     }
   }
 ]
@@ -1600,7 +1641,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1611,7 +1652,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1633,7 +1674,7 @@ body_item = {
     uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
     duration: 60,
     source: "onlinePBX",
-    link: "https://example.com",
+    link: "https://deppa.ru",
     phone: "+79999999999"
   }
 }
@@ -1671,7 +1712,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1682,7 +1723,7 @@ body = [
       uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
       duration: 60,
       source: "onlinePBX",
-      link: "https://example.com",
+      link: "https://deppa.ru",
       phone: "+79999999999"
     }
   },
@@ -1704,7 +1745,7 @@ body_item = {
     uniq: "8f52d38a-5fb3-406d-93a3-a4832dc28f8b",
     duration: 60,
     source: "onlinePBX",
-    link: "https://example.com",
+    link: "https://deppa.ru",
     phone: "+79999999999"
   }
 }
@@ -2206,7 +2247,7 @@ body = [
     duration: 10,
     source: "example_integration",
     phone: "123123",
-    link: "https://example.com/audio.mp3",
+    link: "https://deppa.ru/audio.mp3",
     direction: "inbound",
     call_result: "Успешный разговор",
     call_status: 4

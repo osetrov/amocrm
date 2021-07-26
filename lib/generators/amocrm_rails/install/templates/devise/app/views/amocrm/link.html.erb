@@ -1,0 +1,6 @@
+<div style="width: 100%; padding: 100px; text-align: center;">
+
+  <%= link_to "Установить интеграцию",
+              amocrm_oauth_url(state: current_user.try(:id)),
+              class: 'btn btn-primary' %>
+</div>

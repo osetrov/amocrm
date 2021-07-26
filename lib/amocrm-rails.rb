@@ -2,11 +2,17 @@ require 'amocrm-rails/amocrm_error'
 require 'amocrm-rails/request'
 require 'amocrm-rails/api_request'
 require 'amocrm-rails/response'
+require 'concern'
+require 'helper'
 
 module AmocrmRails
   class << self
-    def generate_access_token(client_id=AmocrmRails.client_id, client_secret=AmocrmRails.client_secret, refresh_token=nil, count=0)
-      refresh_token ||= AmocrmRails.try(:refresh_token)
+    def generate_access_token(**options)
+      user_id = AmocrmRails.try(:user_id)
+      client_id = options[:client_id] || AmocrmRails.client_id
+      client_secret = options[:client_secret] || AmocrmRails.client_secret
+      refresh_token = options[:refresh_token] || AmocrmRails.try(:refresh_token)
+      count = options[:count].to_i
       params = {
         client_id: client_id,
         client_secret: client_secret,
@@ -30,12 +36,20 @@ module AmocrmRails
         response_token = JSON.parse(response.body)
         data = YAML.load_file("config/amocrm_token.yml")
         response_token.each do |k, v|
-          data[k] = v
-          AmocrmRails::register k.underscore.to_sym, v
+          if user_id.present?
+            data[user_id] = {} if data[user_id].nil?
+            data[user_id][k] = v
+          else
+            data[k] = v
+          end
+          AmocrmRails::register(k.underscore.to_sym, v)
         end
         File.open("config/amocrm_token.yml", 'w') { |f| YAML.dump(data, f) }
       elsif count < 3 && AmocrmRails.refresh_token.present?
-        AmocrmRails.generate_access_token(client_id, client_secret, AmocrmRails.refresh_token, count+1)
+        AmocrmRails.generate_access_token(client_id: client_id,
+                                          client_secret: client_secret,
+                                          refresh_token:AmocrmRails.refresh_token,
+                                          count: count+1)
       end
     end
 

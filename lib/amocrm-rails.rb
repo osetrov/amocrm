@@ -1,3 +1,4 @@
+require 'faraday'
 require 'amocrm-rails/amocrm_error'
 require 'amocrm-rails/request'
 require 'amocrm-rails/api_request'

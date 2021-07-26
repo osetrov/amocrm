@@ -212,7 +212,7 @@ https://yourdomain/amocrm/link
 
 После вы будуте перенаправлены на страницу https://yourdomain.com/amocrm
 
-![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_code.png)
+![alt Страница с кнопкой](https://storage.deppa.ru/uploads/amo_code_and_account.png)
 
 Если вы увидили код и информацию об аккаунте - всё в порядке, копировать код нет необходимости, страницу можно закрыть.
 

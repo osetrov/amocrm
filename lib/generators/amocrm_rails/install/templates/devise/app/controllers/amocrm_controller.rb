@@ -11,7 +11,7 @@ class AmocrmController < ApplicationController
         data[Rails.env][current_user.id] = {} if data[Rails.env][current_user.id].nil?
         params.each do |k, v|
           data[Rails.env][current_user.id][k] = v
-          AmocrmRails::register k.underscore.to_sym, v
+          AmocrmRails::register k.to_s.underscore.to_sym, v
         end
         File.open("config/amocrm.yml", 'w') { |f| YAML.dump(data, f) }
       end

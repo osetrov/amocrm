@@ -8,7 +8,7 @@ require 'helper'
 module AmocrmRails
   class << self
     def generate_access_token(**options)
-      user_id = AmocrmRails.user_id
+      user_id = AmocrmRails.try(:user_id)
       client_id = options[:client_id] || AmocrmRails.client_id
       client_secret = options[:client_secret] || AmocrmRails.client_secret
       refresh_token = options[:refresh_token] || AmocrmRails.try(:refresh_token)

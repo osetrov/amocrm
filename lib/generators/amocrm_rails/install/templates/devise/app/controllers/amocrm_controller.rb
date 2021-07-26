@@ -20,6 +20,7 @@ class AmocrmController < ApplicationController
   end
 
   def webhook
+    webhook_name = params[:name]
   end
 
   private

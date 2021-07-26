@@ -18,6 +18,7 @@ module AmocrmRails
         copy_file 'devise/config/initializers/amocrm.rb', 'config/initializers/amocrm.rb'
         route "get '/amocrm' => 'amocrm#code'"
         route "get '/amocrm/link' => 'amocrm#link'"
+        route "post '/amocrm/webhook/:name' => 'amocrm#webhook'"
 
         inject_into_file 'app/controllers/application_controller.rb', after: "class ApplicationController < ActionController::Base\n" do <<-'RUBY'
           include AmocrmRails::Concern

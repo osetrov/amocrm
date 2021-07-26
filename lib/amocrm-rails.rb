@@ -42,7 +42,7 @@ module AmocrmRails
           else
             data[k] = v
           end
-          AmocrmRails::register k.underscore.to_sym, v
+          AmocrmRails::register(k.underscore.to_sym, v)
         end
         File.open("config/amocrm_token.yml", 'w') { |f| YAML.dump(data, f) }
       elsif count < 3 && AmocrmRails.refresh_token.present?

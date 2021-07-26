@@ -216,6 +216,10 @@ https://yourdomain/amocrm/link
 
 Если вы увидили код - всё в порядке, копировать код нет необходимости, страницу можно закрыть.
 
+Если вы не используете [gem Devise](https://github.com/heartcombo/devise), то вам необходимо реализовать в
+application_controller.rb методы `current_user` для получения текущего пользователя, `user_signed_in?` для проверки
+авторизован ли посетитель на вашем сайте и `new_user_session_path` для получения пути к странице авторизции.
+
 Вы можете изменять `timeout`, `open_timeout`, `faraday_adapter`, `proxy`, `symbolize_keys`, `logger`, и `debug`:
 
 ```ruby

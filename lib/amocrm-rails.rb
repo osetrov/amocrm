@@ -1,3 +1,4 @@
+require 'faraday'
 require 'amocrm-rails/amocrm_error'
 require 'amocrm-rails/request'
 require 'amocrm-rails/api_request'
@@ -45,7 +46,7 @@ module AmocrmRails
           AmocrmRails::register(k.underscore.to_sym, v)
         end
         File.open("config/amocrm_token.yml", 'w') { |f| YAML.dump(data, f) }
-      elsif count < 3 && AmocrmRails.refresh_token.present?
+      elsif count < 3 && AmocrmRails.try(:refresh_token).present?
         AmocrmRails.generate_access_token(client_id: client_id,
                                           client_secret: client_secret,
                                           refresh_token:AmocrmRails.refresh_token,

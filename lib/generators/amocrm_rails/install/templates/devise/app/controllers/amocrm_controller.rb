@@ -17,6 +17,10 @@ class AmocrmController < ApplicationController
       end
     end
     @code = params[:code]
+    response = AmocrmRails::Request.account.retrieve(params: {
+      with: 'amojo_id,amojo_rights,users_groups,task_types,version,entity_names,datetime_settings'
+    })
+    @account = response.body
   end
 
   def webhook

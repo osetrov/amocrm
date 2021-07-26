@@ -1,4 +1,4 @@
-require 'amocrm'
+require 'amocrm-rails'
 
 AmocrmRails.setup do |config|
   if File.exist?('config/amocrm.yml')

@@ -2136,11 +2136,17 @@ AmocrmRails::Request.roles(role_id).delete
 body = [
       {
         name: "Автомобильный держатель Mage Safe Qi для iPhone, магнитный",
-        sku: "55185",
         description: "",
         :custom_fields_values=>[
           {
-            :field_id=>group_id,
+            :field_id=>82661,
+            :field_name=>"Артикул", 
+            :field_code=>"SKU",
+            :field_type=>"text",
+            :values=>[{:value=>"55185"}]
+          },
+          {
+            :field_id=>82661,
             :field_name=>"Группа",
             :field_code=>"GROUP",
             :field_type=>"category",

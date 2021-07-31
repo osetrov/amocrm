@@ -2132,6 +2132,34 @@ AmocrmRails::Request.roles(role_id).delete
 ### <a name="users_rights_dependence"></a> [Зависимости прав пользователей](https://www.amocrm.ru/developers/content/crm_platform/users-api#rights-dependence)
 
 ## <a name="products"></a> [Товары](https://www.amocrm.ru/developers/content/crm_platform/products-api)
+```ruby
+body = [
+      {
+        name: "Автомобильный держатель Mage Safe Qi для iPhone, магнитный",
+        sku: "55185",
+        description: "",
+        :custom_fields_values=>[
+          {
+            :field_id=>group_id,
+            :field_name=>"Группа",
+            :field_code=>"GROUP",
+            :field_type=>"category",
+            :values=>[{:value=>"Автомобильные держатели", :enum_id=>category_id}]
+          },
+          {
+            :field_id=>82665,
+            :field_name=>"Цена",
+            :field_code=>"PRICE",
+            :field_type=>"price",
+            :values=>[{:value=>3390}]
+          }
+        ]
+      }
+    ]
+    response = AmocrmRails::Request.catalogs(catalog_id).elements.create(body: body)
+    elements = response.body[:_embedded][:elements]
+    element_id = elements.first[:id]
+```
 ## <a name="webhooks"></a> [Вебхуки](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api)
 ### <a name="webhooks_list"></a> [Список установленных вебхуков в аккаунте](https://www.amocrm.ru/developers/content/crm_platform/webhooks-api#webhooks-list)
 ```ruby

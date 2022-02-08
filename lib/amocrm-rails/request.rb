@@ -48,7 +48,7 @@ module AmocrmRails
       if path.start_with?("v2/")
         path
       else
-        "v4/"
+        "v4/#{path}"
       end
     end
 

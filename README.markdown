@@ -66,6 +66,7 @@
     8. [Добавление элементов списков](#catalog_elements_add)
     9. [Редактирование элементов списков](#catalog_elements_edit)
     10. [Редактирование элемента списка](#catalog_element_edit)
+    11. [Удаление элементов списка](#catalog_elements_delete)
 9. [Связи сущностей](#links)
     1. [Список связанных сущностей](#links_list)
     2. [Привязка сущностей](#links_link)
@@ -869,6 +870,14 @@ response = AmocrmRails::Request.catalogs(catalog_id).elements(element_id).update
 p(response.body)
 element_id = response.body[:id]
 ```
+
+### <a name="catalog_elements_delete"></a> [Удаление элементов списка](https://www.amocrm.ru/developers/content/catalogs/elements)
+```ruby
+body = { delete: [35159, 35164] }
+response = AmocrmRails::Request.v2.catalog_elements.create(body: body)
+p(response.body)
+```
+
 ## <a name="links"></a> [Связи сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api)
 ### <a name="links_list"></a> [Список связанных сущностей](https://www.amocrm.ru/developers/content/crm_platform/entity-links-api#links-list)
 ```ruby

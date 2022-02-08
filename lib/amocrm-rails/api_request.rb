@@ -178,6 +178,7 @@ module AmocrmRails
         request.params.merge!(params) if params
         request.headers['Content-Type'] = 'application/json'
         request.headers['Authorization'] = "Bearer #{self.access_token}"
+        request.headers['User-Agent'] = "AmocrmRails/#{AmocrmRails::VERSION} Ruby gem"
         request.headers.merge!(headers) if headers
         request.body = body if body
         request.options.timeout = self.timeout
@@ -226,7 +227,7 @@ module AmocrmRails
     end
 
     def base_api_url
-      "#{AmocrmRails.api_endpoint}/api/v4/"
+      "#{AmocrmRails.api_endpoint}/api/"
     end
   end
 end

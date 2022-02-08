@@ -44,7 +44,12 @@ module AmocrmRails
     end
 
     def path
-      @path_parts.join('/')
+      path = @path_parts.join('/')
+      if path.start_with?("v2/")
+        path
+      else
+        "v4/"
+      end
     end
 
     def create(params: nil, headers: nil, body: {})

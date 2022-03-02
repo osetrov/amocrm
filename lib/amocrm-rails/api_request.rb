@@ -16,6 +16,7 @@ module AmocrmRails
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
+          reset_access_token
           self.post(params: params, headers: headers, body: body, first_time: false)
         elsif e.response.dig(:status) == 429
           sleep(1.second)
@@ -37,6 +38,7 @@ module AmocrmRails
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
+          reset_access_token
           self.patch(params: params, headers: headers, body: body, first_time: false)
         elsif e.response.try(:status) == 429
           sleep(1.second)
@@ -58,6 +60,7 @@ module AmocrmRails
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
+          reset_access_token
           self.put(params: params, headers: headers, body: body, first_time: false)
         elsif e.response.dig(:status) == 429
           sleep(1.second)
@@ -79,6 +82,7 @@ module AmocrmRails
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
+          reset_access_token
           self.get(params: params, headers: headers, first_time: false)
         elsif e.response.try(:status) == 429
           sleep(1.second)
@@ -100,6 +104,7 @@ module AmocrmRails
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
           AmocrmRails.generate_access_token
+          reset_access_token
           self.delete(params: params, headers: headers, first_time: false)
         elsif e.response.try(:stattus) == 429
           sleep(1.second)
@@ -143,6 +148,10 @@ module AmocrmRails
     end
 
     # Helpers
+
+    def reset_access_token
+      @request_builder.access_token = AmocrmRails.access_token
+    end
 
     def handle_error(error)
       error_params = {}

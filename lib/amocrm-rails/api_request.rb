@@ -150,6 +150,7 @@ module AmocrmRails
     # Helpers
 
     def reset_access_token
+      AmocrmRails::Request.access_token = AmocrmRails.access_token
       @request_builder.access_token = AmocrmRails.access_token
     end
 

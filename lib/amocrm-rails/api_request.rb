@@ -15,6 +15,7 @@ module AmocrmRails
         parse_response(response)
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
+          reassign_access_token
           AmocrmRails.generate_access_token
           reset_access_token
           self.post(params: params, headers: headers, body: body, first_time: false)
@@ -37,6 +38,7 @@ module AmocrmRails
         parse_response(response)
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
+          reassign_access_token
           AmocrmRails.generate_access_token
           reset_access_token
           self.patch(params: params, headers: headers, body: body, first_time: false)
@@ -59,6 +61,7 @@ module AmocrmRails
         parse_response(response)
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
+          reassign_access_token
           AmocrmRails.generate_access_token
           reset_access_token
           self.put(params: params, headers: headers, body: body, first_time: false)
@@ -81,6 +84,7 @@ module AmocrmRails
         parse_response(response)
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
+          reassign_access_token
           AmocrmRails.generate_access_token
           reset_access_token
           self.get(params: params, headers: headers, first_time: false)
@@ -103,6 +107,7 @@ module AmocrmRails
         parse_response(response)
       rescue => e
         if [401, 402].include?(e.response.dig(:status)) && first_time
+          reassign_access_token
           AmocrmRails.generate_access_token
           reset_access_token
           self.delete(params: params, headers: headers, first_time: false)
@@ -152,6 +157,15 @@ module AmocrmRails
     def reset_access_token
       AmocrmRails::Request.access_token = AmocrmRails.access_token
       @request_builder.access_token = AmocrmRails.access_token
+    end
+
+    def reassign_access_token
+      if File.exist?('config/amocrm_token.yml')
+        token_data = YAML.load_file("config/amocrm_token.yml")
+        token_data.each do |k, v|
+          AmocrmRails::register k.to_s.underscore.to_sym, v
+        end
+      end
     end
 
     def handle_error(error)
